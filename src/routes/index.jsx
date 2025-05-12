@@ -1,4 +1,3 @@
-// routes/index.jsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomeBefore from "../components/Home/HomeBefore.jsx";
 
