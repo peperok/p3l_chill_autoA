@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Button, Alert, Spinner, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FaShoppingCart } from "react-icons/fa";
+
+
 
 function HomeBefore() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,138 +23,159 @@ function HomeBefore() {
 
   return (
     <>
-      <style>
-        {`
-          body {
-            margin: 0;
-            font-family: sans-serif;
-            background-color: #f5f5f5;
-          }
+     <style>
+  {`
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #f5f5f5;
+    }
 
-          .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #937f6a;
-            color: white;
-            padding: 1rem 2rem;
-          }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #937f6a;
+      color: white;
+      padding: 1rem 2rem;
+    }
 
-          .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-          }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
 
-          .search-bar {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-          }
+    .search-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-grow: 1;
+  max-width: 600px;
+}
 
-          .promo {
-            background-color: #f3e5ab;
-            text-align: center;
-            padding: 1rem;
-            color: #5a374b;
-            font-weight: bold;
-          }
+.search-input {
+  flex-grow: 1;
+  min-width: 200px;
+}
 
-          .slider {
-            height: 200px;
-            background-color: #ccc;
-            margin: 1rem;
-            border-radius: 8px;
-          }
+.search-button {
+  white-space: nowrap;
+}
 
-          .kategori {
-            background-color: #ff7300;
-            padding: 1rem;
-            color: white;
-            text-align: center;
-            font-weight: bold;
-          }
 
-          .kategori-icons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1rem;
-          }
+    .promo {
+      background-color: #b4a95c;
+      text-align: center;
+      padding: 1rem;
+      color: #3a4550;
+      font-weight: bold;
+    }
 
-          .kategori-icons div {
-            width: 40px;
-            height: 40px;
-            background-color: white;
-            border-radius: 8px;
-          }
+    .slider {
+      height: 200px;
+      background-color: #5a374b;
+      margin: 1rem;
+      border-radius: 8px;
+    }
 
-          .produk-section {
-            padding: 2rem;
-          }
+    .kategori {
+      background-color: #3a4550;
+      padding: 1rem;
+      color: white;
+      text-align: center;
+      font-weight: bold;
+    }
 
-          .produk-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-          }
+    .kategori-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
 
-          .produk-item {
-            background-color: #e0e0e0;
-            height: 150px;
-            border-radius: 8px;
-          }
+    .kategori-icons div {
+      width: 40px;
+      height: 40px;
+      background-color: #b4a95c;
+      border-radius: 8px;
+    }
 
-          footer {
-            background-color: #3a4550;
-            color: white;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            padding: 2rem;
-            gap: 2rem;
-          }
+    .produk-section {
+      padding: 2rem;
+    }
 
-          footer h4 {
-            margin-bottom: 0.5rem;
-            color: #b4a95c;
-          }
+    .produk-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
 
-          footer a, footer p {
-            color: white;
-            display: block;
-            margin-bottom: 0.25rem;
-            text-decoration: none;
-          }
+    .produk-item {
+      background-color: #937f6a;
+      height: 150px;
+      border-radius: 8px;
+    }
 
-          .social-media div {
-            width: 24px;
-            height: 24px;
-            background-color: white;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 0.5rem;
-          }
-        `}
-      </style>
+    footer {
+      background-color: #3a4550;
+      color: white;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      padding: 2rem;
+      gap: 2rem;
+    }
+
+    footer h4 {
+      margin-bottom: 0.5rem;
+      color: #b4a95c;
+    }
+
+    footer a, footer p {
+      color: white;
+      display: block;
+      margin-bottom: 0.25rem;
+      text-decoration: none;
+    }
+
+    .social-media div {
+      width: 24px;
+      height: 24px;
+      background-color: #b4a95c;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 0.5rem;
+    }
+  `}
+</style>
 
       <header className="header">
-        <div className="logo">BelanjaMart</div>
-        <div className="search-bar">
-          <Form.Control
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <Button onClick={handleSearch} disabled={loading}>
-            {loading ? <Spinner animation="border" size="sm" /> : "Cari"}
-          </Button>
-        </div>
-        <div>
-          <span role="img" aria-label="cart">🛒</span>
-          <Link to="/login" style={{ color: 'white', marginLeft: '1rem' }}>Login | Register</Link>
-        </div>
-      </header>
+  <div className="logo">ReuseMart</div>
+ <div className="search-bar">
+  <Form.Control
+    type="text"
+    placeholder="Search..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    className="search-input"
+  />
+  <Button onClick={handleSearch} disabled={loading} className="search-button">
+    {loading ? <Spinner animation="border" size="sm" /> : "Cari"}
+  </Button>
+  <Link to="/cart" style={{ color: 'white', fontSize: '1.5rem' }}>
+    <FaShoppingCart />
+  </Link>
+</div>
+
+
+  <div>
+    <Link to="/login" style={{ color: 'white', marginLeft: '1rem' }}>
+      Login | Register
+    </Link>
+  </div>
+</header>
+
+
 
       {showAlert && (
         <Alert variant="success" onClose={() => setShowAlert(false)} dismissible>
