@@ -10,12 +10,10 @@ const FormLogin = () => {
     });
     const [loading, setLoading] = useState(false);
 
-    // Fixed handleChange function to only check email and password
     const handleChange = (event) => {
         const newData = { ...data, [event.target.name]: event.target.value };
         setData(newData);
         
-        // Only check email and password since there's no username field in the form
         if (newData.email.trim().length > 0 && newData.password.length > 0) {
             setIsDisabled(false);
         } else {
