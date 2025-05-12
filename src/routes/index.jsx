@@ -1,13 +1,16 @@
-// routes/index.jsx
+// src/routes/index.jsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomeBefore from "../components/Home/HomeBefore.jsx";
+import HomeBefore from "../components/Home/HomeBefore";
+import ProfilPenitip from "../components/Profil/ProfilPenitip";
+import ProfilPembeli from "../components/Profil/ProfilPembeli"; // pastikan file ini ada
 
 function AppRoutes() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomeBefore />} />
-        {/* Tambahkan route lain jika diperlukan */}
+        <Route path="/homebefore" element={<HomeBefore />} />
+        <Route path="/profilpenitip" element={<ProfilPenitip />} />
+        <Route path="/profilpembeli" element={<ProfilPembeli />} />
       </Routes>
     </Router>
   );
