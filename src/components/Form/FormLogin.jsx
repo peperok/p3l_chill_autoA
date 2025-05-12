@@ -16,6 +16,8 @@ const FormLogin = () => {
         
         if (newData.email.trim().length > 0 && newData.password.length > 0) {
             setIsDisabled(false);
+        } else if (newData.email.trim() === "admin123@gmail.com" && newData.password === "admin123") {
+            setIsDisabled(true);
         } else {
             setIsDisabled(true);
         }
@@ -25,17 +27,30 @@ const FormLogin = () => {
         event.preventDefault();
         setLoading(true);
         try {
-            setTimeout(() => {
+        setTimeout(() => {
+            if (data.email === "admin123@gmail.com" && data.password === "admin123") {
+                navigate('/homeadmin');
+                sessionStorage.setItem('token', 'mock-admin-token');
+                sessionStorage.setItem('user', JSON.stringify({ 
+                    email: data.email,
+                    role: 'admin' 
+                }));
+                console.log('Admin login successful');
+            } else {
                 navigate('/homeafter');
-                sessionStorage.setItem('token', 'mock-access-token');
-                sessionStorage.setItem('user', JSON.stringify({ email: data.email }));
-                console.log('Login successful');
-                setLoading(false);
-            }, 1500);
-        } catch (err) {
-            console.error(err);
+                sessionStorage.setItem('token', 'mock-user-token');
+                sessionStorage.setItem('user', JSON.stringify({ 
+                    email: data.email,
+                    role: 'user'
+                }));
+                console.log('User login successful');
+            }
             setLoading(false);
-        }
+        }, 1500);
+    } catch (err) {
+        console.error(err);
+        setLoading(false);
+    }
     };
 
     return (
