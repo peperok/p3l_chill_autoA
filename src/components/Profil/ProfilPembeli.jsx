@@ -25,19 +25,33 @@ const customStyles = `
   .profile-header {
     background-color: ${colors.primary};
     color: white;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
   }
   .profile-menu-item {
     transition: all 0.3s ease;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    padding: 12px 16px;
   }
   .profile-menu-item:hover {
     background-color: ${colors.primary}20;
-    transform: translateX(5px);
+    transform: scale(1.01);
   }
   .badge-custom {
     background-color: ${colors.secondary};
     color: white;
   }
+  .card-stat {
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .modal-content {
+    border-radius: 15px;
+    overflow: hidden;
+  }
 `;
+
 
 const ProfilPembeli = () => {
   // State untuk data profil
@@ -176,36 +190,36 @@ const ProfilPembeli = () => {
         </div>
       </div>
 
-      {/* Grid Statistik */}
-      <div className="row p-3 g-3">
-        <div className="col-4">
-          <div 
-            className="card text-center p-3" 
-            style={{ backgroundColor: colors.secondary, color: 'white' }}
-          >
-            <h5 className="mb-2">Rp {stats.totalPembelian.toLocaleString()}</h5>
-            <small>Total Pembelian</small>
-          </div>
-        </div>
-        <div className="col-4">
-          <div 
-            className="card text-center p-3" 
-            style={{ backgroundColor: colors.tertiary, color: 'white' }}
-          >
-            <h5 className="mb-2">{stats.pesananSelesai}</h5>
-            <small>Pesanan Selesai</small>
-          </div>
-        </div>
-        <div className="col-4">
-          <div 
-            className="card text-center p-3" 
-            style={{ backgroundColor: colors.accent, color: 'white' }}
-          >
-            <h5 className="mb-2">{stats.pesananDibatalkan}</h5>
-            <small>Pesanan Dibatalkan</small>
-          </div>
-        </div>
+     <div className="row p-3 g-3">
+  {[
+    {
+      label: 'Total Pembelian',
+      value: 'Rp ' + stats.totalPembelian.toLocaleString(),
+      bg: colors.secondary
+    },
+    {
+      label: 'Pesanan Selesai',
+      value: stats.pesananSelesai,
+      bg: colors.tertiary
+    },
+    {
+      label: 'Pesanan Dibatalkan',
+      value: stats.pesananDibatalkan,
+      bg: colors.accent
+    }
+  ].map((stat, i) => (
+    <div className="col-12 col-md-4" key={i}>
+      <div 
+        className="card text-center p-3 card-stat" 
+        style={{ backgroundColor: stat.bg, color: 'white' }}
+      >
+        <h5 className="mb-2">{stat.value}</h5>
+        <small>{stat.label}</small>
       </div>
+    </div>
+  ))}
+</div>
+
 
       {/* Menu Profil */}
       <div className="list-group p-3">
