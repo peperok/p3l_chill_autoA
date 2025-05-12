@@ -1,16 +1,15 @@
-import { BrowserRouter as Router, Routes, Route, createBrowserRouter } from "react-router-dom";
-import HomeBefore from "../components/Home/HomeBefore.jsx";
-import LoginPage from "../components/Form/FormLogin.jsx";
-import RegisterPage from "../pages/auth/RegisterPage";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomeBefore from "../components/Home/HomeBefore";
+import ProfilPenitip from "../components/Profil/ProfilPenitip";
+import ProfilPembeli from "../components/Profil/ProfilPembeli"; 
 
 function AppRoutes() {
   return (
     <Router>
       <Routes>
         <Route path="/homebefore" element={<HomeBefore />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        {/* Tambahkan route lain jika diperlukan */}
+        <Route path="/profilpenitip" element={<ProfilPenitip />} />
+        <Route path="/profilpembeli" element={<ProfilPembeli />} />
       </Routes>
     </Router>
   );
