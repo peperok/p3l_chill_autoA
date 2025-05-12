@@ -1,9 +1,7 @@
-
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomeBefore from "../components/Home/HomeBefore";
 import ProfilPenitip from "../components/Profil/ProfilPenitip";
-import ProfilPembeli from "../components/Profil/ProfilPembeli"; // pastikan file ini ada
+import ProfilPembeli from "../components/Profil/ProfilPembeli"; 
 
 function AppRoutes() {
   return (
@@ -18,3 +16,4 @@ function AppRoutes() {
 }
 
 export default AppRoutes;
+
