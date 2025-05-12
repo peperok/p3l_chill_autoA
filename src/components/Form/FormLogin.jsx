@@ -157,7 +157,7 @@ const FormLogin = () => {
                 .auth-button {
                 width: 100%;
                 padding: 14px;
-                background-color: #5a374b;
+                background-color: #937f6a;;
                 color: white;
                 border: none;
                 border-radius: 8px;
@@ -168,7 +168,7 @@ const FormLogin = () => {
                 }
 
                 .auth-button:disabled {
-                background-color:  #937f6a;
+                background-color: rgb(204, 194, 183);
                 cursor: not-allowed;
                 }
 
@@ -183,7 +183,7 @@ const FormLogin = () => {
                 }
 
                 .auth-footer a {
-                color: #937f6a;
+                color: #5a374b;
                 text-decoration: none;
                 font-weight: 600;
                 }
