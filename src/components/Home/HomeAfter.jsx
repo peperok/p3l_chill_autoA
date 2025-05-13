@@ -26,7 +26,7 @@ function HomeAfter() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Simulasi data loading
+    // Simulasi data loadingggg
     setTimeout(() => {
       setCartCount(3); // Simulasi cart dengan 3 item
     }, 500);
