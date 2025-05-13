@@ -29,7 +29,7 @@ const FormLogin = () => {
         try {
         setTimeout(() => {
             if (data.email === "admin123@gmail.com" && data.password === "admin123") {
-                navigate('/homeadmin');
+                navigate('/admin');
                 sessionStorage.setItem('token', 'mock-admin-token');
                 sessionStorage.setItem('user', JSON.stringify({ 
                     email: data.email,
