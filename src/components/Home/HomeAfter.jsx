@@ -28,7 +28,7 @@ function HomeAfter() {
   useEffect(() => {
     // Simulasi data loadingggg
     setTimeout(() => {
-      setCartCount(3); // Simulasi cart dengan 3 item
+      setCartCount(3); // Simulasi cart dengan 3 itemmmmmmmmmmmmmmmmmmm
     }, 500);
   }, []);
 
