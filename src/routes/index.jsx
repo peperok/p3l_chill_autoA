@@ -5,6 +5,7 @@ import ProfilPembeli from "../components/Profil/ProfilPembeli";
 import FormLogin from "../components/Form/FormLogin";
 import FormRegister from "../components/Form/FormRegister";
 import HomeAdmin from "../components/Home/HomeAdmin";
+import DetailBarang from "../pages/DetailBarang";
 
 function AppRoutes() {
   return (
@@ -16,6 +17,7 @@ function AppRoutes() {
         <Route path="/profilpembeli" element={<ProfilPembeli />} />
         <Route path="/login" element={<FormLogin />} />
         <Route path="/register" element={<FormRegister />} />
+        <Route path="/detailbarang" element={<DetailBarang />} />
 
       </Routes>
     </Router>
