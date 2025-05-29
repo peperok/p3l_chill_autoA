@@ -13,6 +13,8 @@ import RequestDonasi from "../components/Admin/RequestDonasi";
 import RegisterPembeli from "../components/Admin/RegistrasiPembeli";
 import HomeAfter from "../components/Home/HomeAfter";
 import profil from "../components/Profil/profil"
+import Keranjang from "../components/Home/Keranjang";
+import Merchandise from "../components/Admin/Merchandise";
 
 function AppRoutes() {
   return (
@@ -25,7 +27,6 @@ function AppRoutes() {
         <Route path="/admin/datapenitip" element={<DataPenitip />} />
         <Route path="/admin/dataorganisasi" element={<DataOrganisasi />} />
         <Route path="/admin/reqestdonasi" element={<RequestDonasi />} />
-
         <Route path="/profilpenitip" element={<ProfilPenitip />} />
         <Route path="/profil-pembeli" element={<ProfilPembeli />} />
         <Route path="/login" element={<FormLogin />} />
@@ -33,6 +34,8 @@ function AppRoutes() {
         <Route path="/registerpembeli" element={<RegisterPembeli />} />
         <Route path="/homeafter" element={<HomeAfter/>} />
         <Route path="/profil" element={<profil/>} />
+        <Route path="/keranjang" element={<Keranjang/>} />
+        <Route path="/merchandise" element={<Merchandise />} />
       </Routes>
     </Router>
   );
