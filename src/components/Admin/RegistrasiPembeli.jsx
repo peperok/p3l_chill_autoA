@@ -1,4 +1,4 @@
-// src/components/Home/RequestDonasi.jsx
+// src/components/Home/DataPenitip.jsx
 import React, { useState } from "react";
 import {
   Table,
@@ -23,10 +23,10 @@ const navItems = [
   "Profile",
 ];
 
-const initialForm = { nama: "", notelp: "", alamat: "", tanggungjawab: "" };
+const initialForm = { nama: "", username: "", jabatan: "" };
 
-const RequestDonasi = () => {
-  const [requestdonasiList, setRequestDonasiList] = useState([]);
+const RegisterPembeli = () => {
+  const [penitipList, setPenitipList] = useState([]);
   const [formData, setFormData] = useState(initialForm);
   const [search, setSearch] = useState("");
   const [editIndex, setEditIndex] = useState(null);
@@ -46,27 +46,27 @@ const RequestDonasi = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (editIndex !== null) {
-      const updated = [...requestdonasiList];
+      const updated = [...penitipList];
       updated[editIndex] = formData;
-      setRequestDonasiList(updated);
+      setPenitipList(updated);
     } else {
-      setRequestDonasiList([...requestdonasiList, formData]);
+      setPenitipList([...penitipList, formData]);
     }
     handleClose();
   };
 
   const handleEdit = (index) => {
-    setFormData(requestdonasiList[index]);
+    setFormData(penitipList[index]);
     setEditIndex(index);
     handleShow();
   };
 
   const handleDelete = (index) => {
-    const updated = requestdonasiList.filter((_, i) => i !== index);
-    setRequestDonasiList(updated);
+    const updated = penitipList.filter((_, i) => i !== index);
+    setPenitipList(updated);
   };
 
-  const filteredList = requestdonasiList.filter((item) =>
+  const filteredList = penitipList.filter((item) =>
     item.nama.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -104,14 +104,14 @@ const RequestDonasi = () => {
         <Container fluid>
           <Row className="align-items-center mb-3">
             <Col>
-              <h4 style={{ color: "#5a374b" }}>Request Donasi</h4>
+              <h4 style={{ color: "#5a374b" }}>Data pembeli</h4>
             </Col>
             <Col className="text-end">
               <Button
                 onClick={handleShow}
                 style={{ backgroundColor: "#937f6a", border: "none" }}
               >
-                Tambah Request Donasi
+                Tambah pembeli
               </Button>
             </Col>
           </Row>
@@ -130,21 +130,19 @@ const RequestDonasi = () => {
               <thead style={{ backgroundColor: "#3a4550", color: "white" }}>
                 <tr>
                   <th>#</th>
-                  <th>Request Donasi</th>
-                  <th>Jumlah Barang</th>
+                  <th>Nama Pembeli</th>
                   <th>Alamat</th>
-                  <th>Organisasi</th>
-                  <th>Aksi</th>
+                  <th>No Telepon</th>
+                  <th>Keterangan</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredList.map((requestdonasi, index) => (
+                {filteredList.map((penitip, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{requestdonasi.nama}</td>
-                    <td>{requestdonasi.notelp}</td>
-                    <td>{requestdonasi.alamat}</td>
-                    <td>{requestdonasi.tanggungjawab}</td>
+                    <td>{penitip.nama}</td>
+                    <td>{penitip.alamat}</td>
+                    <td>{penitip.notelp}</td>
                     <td>
                       <Button
                         size="sm"
@@ -174,7 +172,7 @@ const RequestDonasi = () => {
             closeButton
             style={{ backgroundColor: "#3a4550", color: "white" }}
           >
-            <Modal.Title>{editIndex !== null ? "Edit" : "Tambah"} Request Donasi</Modal.Title>
+            <Modal.Title>{editIndex !== null ? "Edit" : "Tambah"} Penitip</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={handleSubmit}>
@@ -188,28 +186,19 @@ const RequestDonasi = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Jumlah Barang</Form.Label>
+                <Form.Label>Username</Form.Label>
                 <Form.Control
-                  name="notelp"
-                  value={formData.notelp}
+                  name="username"
+                  value={formData.username}
                   onChange={handleChange}
                   required
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Alamat</Form.Label>
+                <Form.Label>Pembeli</Form.Label>
                 <Form.Control
-                  name="alamat"
-                  value={formData.alamat}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Organisasi</Form.Label>
-                <Form.Control
-                  name="tanggungjawab"
-                  value={formData.tanggungjawab}
+                  name="jabatan"
+                  value={formData.jabatan}
                   onChange={handleChange}
                   required
                 />
@@ -230,4 +219,4 @@ const RequestDonasi = () => {
   );
 };
 
-export default RequestDonasi;
+export default RegisterPembeli;

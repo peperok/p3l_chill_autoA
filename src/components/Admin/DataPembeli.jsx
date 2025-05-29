@@ -104,14 +104,14 @@ const DataPembeli = () => {
         <Container fluid>
           <Row className="align-items-center mb-3">
             <Col>
-              <h4 style={{ color: "#5a374b" }}>Data Pegawai Admin</h4>
+              <h4 style={{ color: "#5a374b" }}>Data Pembeli</h4>
             </Col>
             <Col className="text-end">
               <Button
                 onClick={handleShow}
                 style={{ backgroundColor: "#937f6a", border: "none" }}
               >
-                Tambah Pegawai
+                Tambah Pembeli
               </Button>
             </Col>
           </Row>
@@ -131,8 +131,8 @@ const DataPembeli = () => {
                 <tr>
                   <th>#</th>
                   <th>Nama</th>
-                  <th>Username</th>
-                  <th>Jabatan</th>
+                  <th>Email</th>
+                  <th>Alamat</th>
                   <th>Keterangan</th>
                 </tr>
               </thead>
@@ -172,7 +172,7 @@ const DataPembeli = () => {
             closeButton
             style={{ backgroundColor: "#3a4550", color: "white" }}
           >
-            <Modal.Title>{editIndex !== null ? "Edit" : "Tambah"} Pegawai</Modal.Title>
+            <Modal.Title>{editIndex !== null ? "Edit" : "Tambah"} Pembeli</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={handleSubmit}>
@@ -186,7 +186,7 @@ const DataPembeli = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Username</Form.Label>
+                <Form.Label>email</Form.Label>
                 <Form.Control
                   name="username"
                   value={formData.username}
@@ -195,7 +195,7 @@ const DataPembeli = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Jabatan</Form.Label>
+                <Form.Label>alamat</Form.Label>
                 <Form.Control
                   name="jabatan"
                   value={formData.jabatan}

@@ -1,4 +1,4 @@
-// src/components/Home/DataOrgansasi.jsx
+// src/components/Home/DataPenitip.jsx
 import React, { useState } from "react";
 import {
   Table,
@@ -26,7 +26,7 @@ const navItems = [
 const initialForm = { nama: "", username: "", jabatan: "" };
 
 const DataOrganisasi = () => {
-  const [organisasiList, setOrganisasiList] = useState([]);
+  const [penitipList, setPenitipList] = useState([]);
   const [formData, setFormData] = useState(initialForm);
   const [search, setSearch] = useState("");
   const [editIndex, setEditIndex] = useState(null);
@@ -46,27 +46,27 @@ const DataOrganisasi = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (editIndex !== null) {
-      const updated = [...organisasiList];
+      const updated = [...penitipList];
       updated[editIndex] = formData;
-      setOrganisasiList(updated);
+      setPenitipList(updated);
     } else {
-      setOrganisasiList([...organisasiList, formData]);
+      setPenitipList([...penitipList, formData]);
     }
     handleClose();
   };
 
   const handleEdit = (index) => {
-    setFormData(organisasiList[index]);
+    setFormData(penitipList[index]);
     setEditIndex(index);
     handleShow();
   };
 
   const handleDelete = (index) => {
-    const updated = organisasiList.filter((_, i) => i !== index);
-    setOrganisasiList(updated);
+    const updated = penitipList.filter((_, i) => i !== index);
+    setPenitipList(updated);
   };
 
-  const filteredList = OrganisasiList.filter((item) =>
+  const filteredList = penitipList.filter((item) =>
     item.nama.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -131,19 +131,18 @@ const DataOrganisasi = () => {
                 <tr>
                   <th>#</th>
                   <th>Nama Organisasi</th>
-                  <th>NoTelp</th>
                   <th>Alamat</th>
-                  <th>BertanggungJawab</th>
+                  <th>No Telepon</th>
+                  <th>Keterangan</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredList.map((organisasi, index) => (
+                {filteredList.map((penitip, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{organisasi.nama}</td>
-                    <td>{organisasi.notelp}</td>
-                    <td>{organisasi.alamat}</td>
-                    <td>{organisasi.tanggungjawab}</td>
+                    <td>{penitip.nama}</td>
+                    <td>{penitip.alamat}</td>
+                    <td>{penitip.notelp}</td>
                     <td>
                       <Button
                         size="sm"
@@ -187,28 +186,19 @@ const DataOrganisasi = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>NoTelepon</Form.Label>
+                <Form.Label>Username</Form.Label>
                 <Form.Control
-                  name="notelp"
-                  value={formData.notelp}
+                  name="username"
+                  value={formData.username}
                   onChange={handleChange}
                   required
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Alamat</Form.Label>
+                <Form.Label>Organisasi</Form.Label>
                 <Form.Control
-                  name="alamat"
-                  value={formData.alamat}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>TanggungJawab</Form.Label>
-                <Form.Control
-                  name="tanggungjawab"
-                  value={formData.tanggungjawab}
+                  name="jabatan"
+                  value={formData.jabatan}
                   onChange={handleChange}
                   required
                 />

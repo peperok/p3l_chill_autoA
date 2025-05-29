@@ -10,7 +10,9 @@ import DataPembeli from "../components/Admin/DataPembeli";
 import DataPenitip from "../components/Admin/DataPenitip";
 import DataOrganisasi from "../components/Admin/DataOrganisasi";
 import RequestDonasi from "../components/Admin/RequestDonasi";
-
+import RegisterPembeli from "../components/Admin/RegistrasiPembeli";
+import HomeAfter from "../components/Home/HomeAfter";
+import profil from "../components/Profil/profil"
 
 function AppRoutes() {
   return (
@@ -22,11 +24,15 @@ function AppRoutes() {
         <Route path="/admin/datapembeli" element={<DataPembeli />} />
         <Route path="/admin/datapenitip" element={<DataPenitip />} />
         <Route path="/admin/dataorganisasi" element={<DataOrganisasi />} />
-         <Route path="/admin/reqdonasi" element={<RequestDonasi />} />
+        <Route path="/admin/reqestdonasi" element={<RequestDonasi />} />
+
         <Route path="/profilpenitip" element={<ProfilPenitip />} />
-        <Route path="/profilpembeli" element={<ProfilPembeli />} />
+        <Route path="/profil-pembeli" element={<ProfilPembeli />} />
         <Route path="/login" element={<FormLogin />} />
         <Route path="/register" element={<FormRegister />} />
+        <Route path="/registerpembeli" element={<RegisterPembeli />} />
+        <Route path="/homeafter" element={<HomeAfter/>} />
+        <Route path="/profil" element={<profil/>} />
       </Routes>
     </Router>
   );

@@ -53,8 +53,8 @@ const customStyles = `
 `;
 
 
-const ProfilPembeli = () => {
-  // State untuk data profil
+const Profil = () => {
+  
   const [profile, setProfile] = useState({
     name: '',
     username: '',
@@ -66,24 +66,23 @@ const ProfilPembeli = () => {
     joinDate: ''
   });
 
-  // State untuk edit profil
+  
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({});
 
-  // State untuk statistik
+  
   const [stats, setStats] = useState({
     totalPembelian: 0,
     pesananSelesai: 0,
     pesananDibatalkan: 0
   });
 
-  // State untuk riwayat aktivitas
+
   const [activities, setActivities] = useState([]);
 
-  // Fungsi untuk memuat data profil
   const fetchProfile = async () => {
     try {
-      // TODO: Ganti dengan pemanggilan API sebenarnya
+  
       setProfile({
         name: 'Wira Utama',
         username: 'wira_utama',
@@ -120,17 +119,17 @@ const ProfilPembeli = () => {
     }
   };
 
-  // Fungsi untuk memulai edit profil
+
   const startEditing = () => {
     setEditData({...profile});
     setIsEditing(true);
   };
 
-  // Fungsi untuk menyimpan perubahan profil
+
   const saveProfile = async (e) => {
     e.preventDefault();
     try {
-      // TODO: Kirim data update ke backend
+    
       setProfile(editData);
       setIsEditing(false);
     } catch (error) {
@@ -138,7 +137,7 @@ const ProfilPembeli = () => {
     }
   };
 
-  // Efek untuk memuat data saat komponen dipasang
+
   useEffect(() => {
     
     fetchProfile();
@@ -146,10 +145,10 @@ const ProfilPembeli = () => {
 
   return (
     <div className="container-fluid" style={{ backgroundColor: colors.primary + '10' }}>
-      {/* Tambahkan custom styles */}
+      {}
       <style>{customStyles}</style>
 
-      {/* Header Profil */}
+      {}
       <div className="profile-header p-3 d-flex align-items-center">
         <div className="position-relative me-3">
           {profile.profilePicture ? (
@@ -221,39 +220,10 @@ const ProfilPembeli = () => {
 </div>
 
 
-      {/* Menu Profil */}
+      
       <div className="list-group p-3">
         {[
-          { 
-            icon: <Package size={20} />, 
-            text: 'Pesanan Saya', 
-            badge: stats.pesananSelesai 
-          },
-          { 
-            icon: <Star size={20} />, 
-            text: 'Reward & Poin', 
-            badge: profile.points 
-          },
-          { 
-            icon: <CreditCard size={20} />, 
-            text: 'Metode Pembayaran' 
-          },
-          { 
-            icon: <MapPin size={20} />, 
-            text: 'Alamat Pengiriman' 
-          },
-          { 
-            icon: <Settings size={20} />, 
-            text: 'Pengaturan Akun' 
-          },
-          { 
-            icon: <Shield size={20} />, 
-            text: 'Keamanan Akun' 
-          },
-          { 
-            icon: <HelpCircle size={20} />, 
-            text: 'Pusat Bantuan' 
-          }
+          
         ].map((item, index) => (
           <a 
             key={index} 
@@ -375,4 +345,4 @@ const ProfilPembeli = () => {
   );
 };
 
-export default ProfilPembeli;
+export default Profil;

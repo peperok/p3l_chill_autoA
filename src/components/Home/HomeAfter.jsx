@@ -23,12 +23,13 @@ function HomeAfter() {
   const [showAlert, setShowAlert] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [wishlist, setWishlist] = useState({});
+  const [showUserMenu, setShowUserMenu] = useState(false); // New state for dropdown
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Simulasi data loading
+    // Simulate cart with 3 items
     setTimeout(() => {
-      setCartCount(3); // Simulasi cart dengan 3 item
+      setCartCount(3); 
     }, 500);
   }, []);
 
@@ -41,7 +42,7 @@ function HomeAfter() {
       setLoading(false);
       toast.success(`Hasil pencarian untuk: ${searchTerm}`);
       setShowAlert(true);
-    }, 800);
+    }, 800000);
   };
 
   const handleAddToWishlist = (productId) => {
@@ -168,7 +169,6 @@ function HomeAfter() {
     }
   ];
 
-
   const formatRupiah = (angka) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
@@ -220,47 +220,52 @@ function HomeAfter() {
             --info: #4cc9f0;
           }
             .user-menu {
-  position: relative;
-  background-color: var(--primary-light);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+              position: relative;
+              background-color: var(--primary-light);
+              color: white;
+              padding: 0.5rem 1rem;
+              border-radius: 4px;
+              cursor: pointer;
+              transition: all 0.3s ease;
+            }
 
-.user-menu:hover {
-  background-color: var(--primary);
-}
+            .user-menu:hover {
+              background-color: var(--primary);
+            }
 
-.user-menu:hover .dropdown-menu {
-  display: block;
-}
+            /* Remove the hover effect for dropdown menu visibility */
+            /* .user-menu:hover .dropdown-menu {
+              display: block;
+            } */
 
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 120%;
-  left: 0;
-  background-color: white;
-  color: var(--dark);
-  padding: 0.5rem 0;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  border-radius: 4px;
-  min-width: 150px;
-  z-index: 100;
-}
+            .dropdown-menu {
+              display: none; /* Hidden by default */
+              position: absolute;
+              top: 120%;
+              left: 0;
+              background-color: white;
+              color: var(--dark);
+              padding: 0.5rem 0;
+              box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+              border-radius: 4px;
+              min-width: 150px;
+              z-index: 100;
+            }
 
-.dropdown-menu a {
-  display: block;
-  padding: 0.5rem 1rem;
-  color: var(--dark);
-  text-decoration: none;
-}
+            .dropdown-menu.show {
+                display: block; /* Show when 'show' class is present */
+            }
 
-.dropdown-menu a:hover {
-  background-color: var(--light);
-}
+            .dropdown-menu a {
+              display: block;
+              padding: 0.5rem 1rem;
+              color: var(--dark);
+              text-decoration: none;
+            }
+
+            .dropdown-menu a:hover {
+              background-color: var(--light);
+            }
 
 
           body {
@@ -899,13 +904,14 @@ function HomeAfter() {
             {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
           </Link>
           
-          <div className="user-menu">
-  <FaUser /> {user.name}
-  <div className="dropdown-menu">
-    <Link to="/profile">Profil</Link>
-    <Link to="/logout">Logout</Link>
-  </div>
-</div>
+          <div className="user-menu" onClick={() => setShowUserMenu(!showUserMenu)}>
+            <FaUser /> {user.name}
+            <div className={`dropdown-menu ${showUserMenu ? 'show' : ''}`}>
+              <Link to="/profil-pembeli" onClick={() => setShowUserMenu(false)}>Profil</Link>
+              <Link to="/" onClick={() => { /* Add logout logic here */ setShowUserMenu(false); toast.info("Anda telah logout."); }}>Logout</Link>
+              <Link to="/info-tambahan" onClick={() => setShowUserMenu(false)}>Info Tambahan</Link>
+            </div>
+          </div>
 
         </div>
       </header>
