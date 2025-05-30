@@ -1,4 +1,3 @@
-// src/components/Home/DataPegawai.jsx
 import React, { useState } from "react";
 import {
   Table,
@@ -24,6 +23,68 @@ const navItems = [
 ];
 
 const initialForm = { nama: "", username: "", jabatan: "" };
+
+const styles = {
+  sidebar: {
+    backgroundColor: "#5a374b",
+    color: "white",
+    width: "250px",
+    padding: "20px",
+    display: "flex",
+    flexDirection: "column",
+  },
+  navLink: {
+    padding: "10px 15px",
+    color: "white",
+    borderRadius: "5px",
+    textDecoration: "none",
+    marginBottom: "5px",
+    transition: "background 0.3s",
+    fontWeight: 500,
+    fontSize: "0.95rem",
+  },
+  activeLink: {
+    backgroundColor: "#ffffff",
+    color: "#5a374b",
+  },
+  title: {
+    color: "#5a374b",
+    fontWeight: 600,
+  },
+  addButton: {
+    backgroundColor: "#937f6a",
+    border: "none",
+    color: "white",
+    padding: "8px 16px",
+    borderRadius: "6px",
+  },
+  editButton: {
+    backgroundColor: "#b4a95c",
+    border: "none",
+    color: "white",
+  },
+  deleteButton: {
+    backgroundColor: "#5a374b",
+    border: "none",
+    color: "white",
+  },
+  saveButton: {
+    backgroundColor: "#937f6a",
+    border: "none",
+    color: "white",
+  },
+  headerTable: {
+    backgroundColor: "#5a374b",
+    color: "white",
+  },
+  searchBox: {
+    maxWidth: "400px",
+  },
+  modalHeader: {
+    backgroundColor: "#3a4550",
+    color: "white",
+  },
+};
 
 const DataPegawai = () => {
   const [pegawaiList, setPegawaiList] = useState([]);
@@ -71,21 +132,18 @@ const DataPegawai = () => {
   );
 
   return (
-    <div className="d-flex vh-100">
+    <div className="d-flex vh-100" style={{ fontFamily: "Poppins, sans-serif" }}>
       {/* Sidebar */}
-      <div
-        className="bg-dark text-white d-flex flex-column p-3"
-        style={{ width: "250px" }}
-      >
+      <div style={styles.sidebar}>
         <h4 className="text-center mb-4">ReuseMart</h4>
         {navItems.map((item) => (
           <NavLink
             key={item}
             to={`/admin/${item.replace(/ /g, "").toLowerCase()}`}
-            className={({ isActive }) =>
-              `py-2 px-3 text-white text-decoration-none rounded mb-1 ${
-                isActive ? "bg-secondary" : "hover:bg-light text-white"
-              }`
+            style={({ isActive }) =>
+              isActive
+                ? { ...styles.navLink, ...styles.activeLink }
+                : styles.navLink
             }
           >
             {item}
@@ -94,6 +152,7 @@ const DataPegawai = () => {
         <NavLink
           to="/login"
           className="mt-auto btn btn-warning text-dark text-center"
+          style={{ backgroundColor: "#937f6a", border: "none" }}
         >
           Logout
         </NavLink>
@@ -104,14 +163,11 @@ const DataPegawai = () => {
         <Container fluid>
           <Row className="align-items-center mb-3">
             <Col>
-              <h4 style={{ color: "#5a374b" }}>Data Pegawai Admin</h4>
+              <h4 style={styles.title}>Data Pegawai Admin</h4>
             </Col>
             <Col className="text-end">
-              <Button
-                onClick={handleShow}
-                style={{ backgroundColor: "#937f6a", border: "none" }}
-              >
-                Tambah Pegawai
+              <Button style={styles.addButton} onClick={handleShow}>
+                + Tambah Pegawai
               </Button>
             </Col>
           </Row>
@@ -122,18 +178,18 @@ const DataPegawai = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="mb-3"
-            style={{ maxWidth: 400 }}
+            style={styles.searchBox}
           />
 
           <div className="table-responsive">
-            <Table bordered hover className="bg-white">
-              <thead style={{ backgroundColor: "#3a4550", color: "white" }}>
-                <tr>
+            <Table bordered hover className="bg-white table-striped">
+              <thead>
+                <tr style={styles.headerTable}>
                   <th>#</th>
                   <th>Nama</th>
                   <th>Username</th>
                   <th>Jabatan</th>
-                  <th>Keterangan</th>
+                  <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -146,15 +202,14 @@ const DataPegawai = () => {
                     <td>
                       <Button
                         size="sm"
-                        style={{ backgroundColor: "#b4a95c", border: "none" }}
-                        className="me-2"
+                        style={{ ...styles.editButton, marginRight: "8px" }}
                         onClick={() => handleEdit(index)}
                       >
                         Edit
                       </Button>
                       <Button
                         size="sm"
-                        style={{ backgroundColor: "#5a374b", border: "none" }}
+                        style={styles.deleteButton}
                         onClick={() => handleDelete(index)}
                       >
                         Hapus
@@ -168,11 +223,10 @@ const DataPegawai = () => {
         </Container>
 
         <Modal show={showModal} onHide={handleClose} centered>
-          <Modal.Header
-            closeButton
-            style={{ backgroundColor: "#3a4550", color: "white" }}
-          >
-            <Modal.Title>{editIndex !== null ? "Edit" : "Tambah"} Pegawai</Modal.Title>
+          <Modal.Header closeButton style={styles.modalHeader}>
+            <Modal.Title>
+              {editIndex !== null ? "Edit" : "Tambah"} Pegawai
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={handleSubmit}>
@@ -204,10 +258,7 @@ const DataPegawai = () => {
                 />
               </Form.Group>
               <div className="text-end">
-                <Button
-                  type="submit"
-                  style={{ backgroundColor: "#937f6a", border: "none" }}
-                >
+                <Button type="submit" style={styles.saveButton}>
                   Simpan
                 </Button>
               </div>

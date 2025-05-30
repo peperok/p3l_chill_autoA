@@ -15,13 +15,20 @@ import {
   Zap
 } from 'lucide-react';
 
-// Definisi color palette
 const colors = {
-  primary: '#937f6a',
-  secondary: '#5a374b',
-  tertiary: '#3a4550',
-  accent: '#b4a95c'
+  primary: '#5a374b',       // sidebar dan heading
+  secondary: '#937f6a',     // tombol & badge
+  tertiary: '#3a4550',      // teks & outline
+  accent: '#937f6a'         // badge dan highlight agar konsisten
 };
+
+<div style={{
+  textAlign: 'center',
+  padding: '2rem 1rem',
+  color: colors.primary,
+  fontWeight: 600
+}}></div>
+
 
 // Custom CSS untuk merchandise layout
 const customStyles = `

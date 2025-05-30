@@ -15,6 +15,7 @@ import HomeAfter from "../components/Home/HomeAfter";
 import profil from "../components/Profil/profil"
 import Keranjang from "../components/Home/Keranjang";
 import Merchandise from "../components/Admin/Merchandise";
+import Barang from "../components/Admin/Barang";
 
 function AppRoutes() {
   return (
@@ -26,7 +27,9 @@ function AppRoutes() {
         <Route path="/admin/datapembeli" element={<DataPembeli />} />
         <Route path="/admin/datapenitip" element={<DataPenitip />} />
         <Route path="/admin/dataorganisasi" element={<DataOrganisasi />} />
-        <Route path="/admin/reqestdonasi" element={<RequestDonasi />} />
+        <Route path="/admin/requestdonasi" element={<RequestDonasi />} />
+        <Route path="/admin/merchandise" element={<Merchandise />} />
+        <Route path="/admin/barang" element={<Barang />} />
         <Route path="/profilpenitip" element={<ProfilPenitip />} />
         <Route path="/profil-pembeli" element={<ProfilPembeli />} />
         <Route path="/login" element={<FormLogin />} />
@@ -35,7 +38,6 @@ function AppRoutes() {
         <Route path="/homeafter" element={<HomeAfter/>} />
         <Route path="/profil" element={<profil/>} />
         <Route path="/keranjang" element={<Keranjang/>} />
-        <Route path="/merchandise" element={<Merchandise />} />
       </Routes>
     </Router>
   );
