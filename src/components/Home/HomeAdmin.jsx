@@ -9,7 +9,6 @@ const navItems = [
   "Data Pembeli",
   "Data Penitip",
   "Data Organisasi",
-  "Request Donasi",
   "Profile",
   "Register Pembeli",
 ];

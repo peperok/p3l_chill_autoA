@@ -204,10 +204,10 @@ function HomeBefore() {
           @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
           :root {
-            --primary: #2d6a4f;
-            --primary-light: #40916c;
-            --secondary: #b7b7a4;
-            --accent: #ffca3a;
+            --primary: #937f6a;
+            --primary-light: #5a374b;
+            --secondary: #003a55;
+            --accent: #b4a95c;
             --light: #f8f9fa;
             --dark: #212529;
             --danger: #ff686b;
@@ -283,7 +283,7 @@ function HomeBefore() {
           }
           
           .search-button:hover {
-            background-color: #e6b635;
+            background-color: #a89948;
             transform: translateY(-2px);
           }
 
@@ -341,7 +341,7 @@ function HomeBefore() {
           }
 
           .promo-banner {
-            background: linear-gradient(to right, var(--accent), #ffd56b);
+            background: linear-gradient(to right, var(--accent), #d1c97e);
             text-align: center;
             padding: 0.75rem;
             color: var(--dark);
@@ -829,6 +829,7 @@ function HomeBefore() {
         `}
       </style>
 
+      {/* rest of component JSX unchanged */}
       <header className="header">
         <Link to="/" className="logo">ReuseMart</Link>
         
