@@ -29,8 +29,10 @@ function HomeAfter() {
   useEffect(() => {
     setTimeout(() => {
       setCartCount(3);
-    }, 500);
+    }, 1000);
   }, []);
+      }, 500);
+    }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -41,6 +43,8 @@ function HomeAfter() {
       setLoading(false);
       toast.success(`Hasil pencarian untuk: ${searchTerm}`);
       setShowAlert(true);
+    setTimeout(() => {
+      setCartCount(3);
     }, 800000);
   };
 
@@ -199,140 +203,180 @@ function HomeAfter() {
 
   return (
     <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-        :root {
-          --primary: #937f6a;
-          --primary-light: #b4a95c;
-          --secondary: #5a374b;
-          --accent: #b4a95c;
-          --light: #f8f9fa;
-          --dark: #3a4550;
-          --danger: #ff686b;
-        }
+          :root {
+            --primary: #937f6a;
+            --primary-light: #b4a95c;
+            --secondary: #5a374b;
+            --accent: #b4a95c;
+            --light: #f8f9fa;
+            --dark: #3a4550;
+            --danger: #ff686b;
+          }
 
-        body {
-          margin: 0;
-          font-family: 'Poppins', sans-serif;
-          background-color: #f5f7f9;
-        }
+          body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7f9;
+          }
 
-        .product-rating {
-          font-size: 0.9rem;
-          color: #ffc107;
-          margin-bottom: 0.5rem;
-        }
+          .product-rating {
+            font-size: 0.9rem;
+            color: #ffc107;
+            margin-bottom: 0.5rem;
+          }
 
-        .rating-number {
-          color: #6c757d;
-          font-size: 0.8rem;
-          margin-left: 0.25rem;
-        }
+          .rating-number {
+            color: #6c757d;
+            font-size: 0.8rem;
+            margin-left: 0.25rem;
+          }
 
-        .star-filled {
-          color: #ffc107;
-        }
+          .star-filled {
+            color: #ffc107;
+          }
 
-        .star-half {
-          color: #ffc107;
-          position: relative;
-        }
+          .star-half {
+            color: #ffc107;
+            position: relative;
+          }
 
-        .star-empty {
-          color: #e0e0e0;
-        }
+          .star-empty {
+            color: #e0e0e0;
+          }
 
-        .wishlist-icon {
-          font-size: 1.2rem;
-          transition: all 0.3s ease;
-          color: #adb5bd;
-        }
+          .wishlist-icon {
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            color: #adb5bd;
+          }
 
-        .wishlist-active {
-          color: var(--danger);
-        }
-      `}</style>
+          .wishlist-active {
+            color: var(--danger);
+          }
+        `}</style>
 
-      <Navbar expand="lg" variant="dark" style={{backgroundColor: 'var(--primary)'}} sticky="top" className="px-3">
-        <Container fluid>
-          <Navbar.Brand as={Link} to="/" className="fw-bold" style={{color: 'var(--light)'}}>ReuseMart</Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbarScroll" />
-          <Navbar.Collapse id="navbarScroll">
-            <Form className="d-flex ms-auto me-auto" onSubmit={handleSearch} style={{maxWidth: '600px', width: '100%'}}>
-              <InputGroup>
-                <Form.Control
-                  type="search"
-                  placeholder="Cari produk preloved..."
-                  className="me-2 rounded-pill"
-                  value={searchTerm}
-                  onChange={e => setSearchTerm(e.target.value)}
-                  aria-label="Search"
-                />
-                <Button type="submit" variant="warning" className="rounded-pill px-4" disabled={loading}>
-                  {loading ? <Spinner animation="border" size="sm" /> : <><FaSearch className="me-2" /> Cari</>}
-                </Button>
-              </InputGroup>
-            </Form>
+        <Navbar expand="lg" variant="dark" style={{backgroundColor: 'var(--primary)'}} sticky="top" className="px-3">
+          <Container fluid>
+            <Navbar.Brand as={Link} to="/" className="fw-bold" style={{color: 'var(--light)'}}>ReuseMart</Navbar.Brand>
+            <Navbar.Toggle aria-controls="navbarScroll" />
+            <Navbar.Collapse id="navbarScroll">
+              <Form className="d-flex ms-auto me-auto" onSubmit={handleSearch} style={{maxWidth: '600px', width: '100%'}}>
+                <InputGroup>
+                  <Form.Control
+                    type="search"
+                    placeholder="Cari produk preloved..."
+                    className="me-2 rounded-pill"
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                    aria-label="Search"
+                  />
+                  <Button type="submit" variant="warning" className="rounded-pill px-4" disabled={loading}>
+                    {loading ? <Spinner animation="border" size="sm" /> : <><FaSearch className="me-2" /> Cari</>}
+                  </Button>
+                </InputGroup>
+              </Form>
 
-            <Nav className="ms-auto align-items-center gap-3">
-              <Nav.Link as={Link} to="/keranjang" className="position-relative" style={{color: 'var(--light)', fontSize: '1.5rem'}}>
-                <FaShoppingCart />
-                {cartCount > 0 && (
-                  <Badge bg="danger" pill style={{position: 'absolute', top: '-8px', right: '-10px'}}>
-                    {cartCount}
-                  </Badge>
-                )}
-              </Nav.Link>
+              <Nav className="ms-auto align-items-center gap-3">
+                <Nav.Link as={Link} to="/keranjang" className="position-relative" style={{color: 'var(--light)', fontSize: '1.5rem'}}>
+                  <FaShoppingCart />
+                  {cartCount > 0 && (
+                    <Badge bg="danger" pill style={{position: 'absolute', top: '-8px', right: '-10px'}}>
+                      {cartCount}
+                    </Badge>
+                  )}
+                </Nav.Link>
 
-              <NavDropdown 
-                title={<><FaUser className="me-2" /> {user.name}</>} 
-                id="user-menu-dropdown" 
-                align="end"
-                show={showUserMenu}
-                onToggle={() => setShowUserMenu(!showUserMenu)}
-                menuVariant="light"
-              >
-                <NavDropdown.Item as={Link} to="/profil-pembeli" onClick={() => setShowUserMenu(false)}>Profil</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/" onClick={() => { setShowUserMenu(false); toast.info("Anda telah logout."); }}>Logout</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/info-tambahan" onClick={() => setShowUserMenu(false)}>Info Tambahan</NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+                <NavDropdown 
+                  title={<><FaUser className="me-2" /> {user.name}</>} 
+                  id="user-menu-dropdown" 
+                  align="end"
+                  show={showUserMenu}
+                  onToggle={() => setShowUserMenu(!showUserMenu)}
+                  menuVariant="light"
+                >
+                  <NavDropdown.Item as={Link} to="/profil-pembeli" onClick={() => setShowUserMenu(false)}>Profil</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/" onClick={() => { setShowUserMenu(false); toast.info("Anda telah logout."); }}>Logout</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/info-tambahan" onClick={() => setShowUserMenu(false)}>Info Tambahan</NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
 
-      <Container>
-        {showAlert && (
-          <Alert variant="success" onClose={() => setShowAlert(false)} dismissible className="my-3">
-            <Alert.Heading>Hasil Pencarian</Alert.Heading>
-            <p>Menampilkan hasil untuk "{searchTerm}"</p>
-          </Alert>
-        )}
+        <Container>
+          {showAlert && (
+            <Alert variant="success" onClose={() => setShowAlert(false)} dismissible className="my-3">
+              <Alert.Heading>Hasil Pencarian</Alert.Heading>
+              <p>Menampilkan hasil untuk "{searchTerm}"</p>
+            </Alert>
+          )}
 
-        <div className="promo-banner text-center my-3 p-3 rounded" style={{
-          background: 'linear-gradient(to right, var(--accent), #ffd56b)', 
-          color: 'var(--dark)', 
-          fontWeight: 'bold',
-          letterSpacing: '1px',
-          animation: 'pulse 2s infinite'
-        }}>
-          Gunakan promo menarik lainnya !! 💝
-        </div>
-
-        {/* Carousel */}
-        <div id="homeCarousel" className="carousel slide mb-4" data-bs-ride="carousel">
-          <div className="carousel-inner rounded shadow-sm">
-            {iklanList.map((iklan, index) => (
-              <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-                <img src={iklan.gambar} alt={iklan.alt} className="d-block w-100" style={{height: '300px', objectFit: 'cover'}} />
-                <div className="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
-                  <h3>{iklan.title}</h3>
-                  <p>{iklan.description}</p>
-                </div>
-              </div>
-            ))}
+          <div className="promo-banner text-center my-3 p-3 rounded" style={{
+            background: 'linear-gradient(to right, var(--accent), #ffd56b)', 
+            color: 'var(--dark)', 
+            fontWeight: 'bold',
+            letterSpacing: '1px',
+            animation: 'pulse 2s infinite'
+          }}>
+            Gunakan promo menarik lainnya !! 💝
           </div>
+
+          {/* Carousel */}
+          <div id="homeCarousel" className="carousel slide mb-4" data-bs-ride="carousel">
+            <div className="carousel-inner rounded shadow-sm">
+              {iklanList.map((iklan, index) => (
+                <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                  <img src={iklan.gambar} alt={iklan.alt} className="d-block w-100" style={{height: '300px', objectFit: 'cover'}} />
+                  <div className="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                    <h3>{iklan.title}</h3>
+                    <p>{iklan.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Container>
+          </div>
+          
+          <div className="footer-section">
+            <h4>Informasi</h4>
+            <div className="footer-links">
+              <a href="#" className="footer-link">Tentang Kami</a>
+              <a href="#" className="footer-link">Syarat & Ketentuan</a>
+              <a href="#" className="footer-link">Kebijakan Privasi</a>
+              <a href="#" className="footer-link">Blog ReuseMart</a>
+              <a href="#" className="footer-link">Karir</a>
+            </div>
+          </div>
+          
+          <div className="footer-section">
+            <h4>Hubungi Kami</h4>
+            <div className="footer-contact">
+              <div className="contact-item">
+                <i>📧</i>
+                <span>cs@reusemart.id</span>
+              </div>
+              <div className="contact-item">
+                <i>📱</i>
+                <span>+62 812 3456 7890</span>
+              </div>
+              <div className="contact-item">
+                <i>🏢</i>
+                <span>Jl. Eco Living No. 123, Jakarta Selatan</span>
+              </div>
+              <div className="contact-item">
+                <i>⏰</i>
+                <span>Senin - Jumat: 08.00 - 17.00 WIB</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="footer-bottom">
+          <p>&copy; {new Date().getFullYear()} ReuseMart. Semua hak dilindungi.</p>
         </div>
 
         {/* Kategori */}

@@ -46,9 +46,9 @@ function AppRoutes() {
         <Route path="/register" element={<FormRegister />} />
         <Route path="/formorganisasi" element={<FormOrganisasi />} />
         <Route path="/registerpembeli" element={<RegisterPembeli />} />
-        <Route path="/homeafter" element={<HomeAfter/>} />
-        <Route path="/profil" element={<profil/>} />
-        <Route path="/keranjang" element={<Keranjang/>} />
+        <Route path="/homeafter" element={<HomeAfter />} />   
+        <Route path="/profil" element={<profil />} />
+        <Route path="/keranjang" element={<Keranjang />} />
         <Route path="/owner/laporan" element={<LaporanPage />} />
       </Routes>
     </Router>
