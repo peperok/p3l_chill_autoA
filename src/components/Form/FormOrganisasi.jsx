@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Container, Row, Col, Spinner } from "react-bootstrap";
 
-const FormLogin = () => {
+const FormRegister = () => {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const [data, setData] = useState({
+    username: "",
     email: "",
     password: "",
+    namaOrganisasi: "",
+    alamat: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -15,46 +18,27 @@ const FormLogin = () => {
     const newData = { ...data, [event.target.name]: event.target.value };
     setData(newData);
 
-    if (newData.email.trim().length > 0 && newData.password.length > 0) {
-      setIsDisabled(false);
-    } else if (
-      newData.email.trim() === "admin123@gmail.com" &&
-      newData.password === "admin123"
+    // Validasi: semua field wajib diisi
+    if (
+      newData.username.trim().length > 0 &&
+      newData.email.trim().length > 0 &&
+      newData.password.length > 0 &&
+      newData.namaOrganisasi.trim().length > 0 &&
+      newData.alamat.trim().length > 0
     ) {
-      setIsDisabled(true);
+      setIsDisabled(false);
     } else {
       setIsDisabled(true);
     }
   };
 
-  const Login = (event) => {
+  const Register = (event) => {
     event.preventDefault();
     setLoading(true);
     try {
       setTimeout(() => {
-        if (data.email === "admin123@gmail.com" && data.password === "admin123") {
-          navigate("/admin");
-          sessionStorage.setItem("token", "mock-admin-token");
-          sessionStorage.setItem(
-            "user",
-            JSON.stringify({
-              email: data.email,
-              role: "admin",
-            })
-          );
-          console.log("Admin login successful");
-        } else {
-          navigate("/homeafter");
-          sessionStorage.setItem("token", "mock-user-token");
-          sessionStorage.setItem(
-            "user",
-            JSON.stringify({
-              email: data.email,
-              role: "user",
-            })
-          );
-          console.log("User login successful");
-        }
+        navigate("/homeafter");
+        console.log("Registration successful");
         setLoading(false);
       }, 1500);
     } catch (err) {
@@ -79,10 +63,10 @@ const FormLogin = () => {
               <h3 className="mb-2">
                 <strong>Reuse Mart</strong>
               </h3>
-              <p>Selamat datang. Silahkan masuk ke akun Anda.</p>
+              <p>Daftar untuk membuat akun baru.</p>
             </div>
 
-            <Form onSubmit={Login}>
+            <Form onSubmit={Register}>
               <Form.Group className="mb-3" controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
@@ -102,6 +86,31 @@ const FormLogin = () => {
                   name="password"
                   placeholder="Masukkan Password"
                   value={data.password}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="namaOrganisasi">
+                <Form.Label>Nama Organisasi</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="namaOrganisasi"
+                  placeholder="Masukkan Nama Organisasi"
+                  value={data.namaOrganisasi}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="alamat">
+                <Form.Label>Alamat</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={2}
+                  name="alamat"
+                  placeholder="Masukkan Alamat"
+                  value={data.alamat}
                   onChange={handleChange}
                   required
                 />
@@ -127,21 +136,16 @@ const FormLogin = () => {
                     Loading...
                   </>
                 ) : (
-                  "Login"
+                  "Register"
                 )}
               </Button>
             </Form>
 
             <div className="text-center mt-4 text-muted">
               <p>
-                Don't have an Account? Create Account{" "}
-                <p></p>
-                <Link to="/formorganisasi" style={{ color: "#5a374b", fontWeight: "600" }}>
-                  Organitation
-                </Link>
-                <a> or </a>
-                <Link to="/register" style={{ color: "#5a374b", fontWeight: "600" }}>
-                  Buyer
+                Already have an Account?{" "}
+                <Link to="/login" style={{ color: "#5a374b", fontWeight: "600" }}>
+                  Click Here!
                 </Link>
               </p>
             </div>
@@ -152,4 +156,4 @@ const FormLogin = () => {
   );
 };
 
-export default FormLogin;
+export default FormRegister;
