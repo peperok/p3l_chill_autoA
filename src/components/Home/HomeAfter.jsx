@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Alert, Spinner, Form, Badge, Container, Row, Col, Nav, Navbar, NavDropdown, InputGroup } from "react-bootstrap";
+import { Button, Alert, Spinner, Form, Badge } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { 
@@ -23,16 +23,14 @@ function HomeAfter() {
   const [showAlert, setShowAlert] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [wishlist, setWishlist] = useState({});
-  const [showUserMenu, setShowUserMenu] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Simulasi data loading
     setTimeout(() => {
-      setCartCount(3);
-    }, 1000);
+      setCartCount(3); // Simulasi cart dengan 3 item
+    }, 500);
   }, []);
-      }, 500);
-    }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -43,9 +41,7 @@ function HomeAfter() {
       setLoading(false);
       toast.success(`Hasil pencarian untuk: ${searchTerm}`);
       setShowAlert(true);
-    setTimeout(() => {
-      setCartCount(3);
-    }, 800000);
+    }, 800);
   };
 
   const handleAddToWishlist = (productId) => {
@@ -172,6 +168,7 @@ function HomeAfter() {
     }
   ];
 
+
   const formatRupiah = (angka) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
@@ -180,13 +177,16 @@ function HomeAfter() {
     }).format(angka);
   };
 
+  // Menghitung harga setelah diskon
   const hitungDiskon = (harga, diskon) => {
     return harga - (harga * diskon / 100);
   };
 
+  // Render bintang rating
   const renderRating = (rating) => {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
+    
     return (
       <div className="product-rating">
         {[...Array(fullStars)].map((_, i) => (
@@ -203,18 +203,65 @@ function HomeAfter() {
 
   return (
     <>
-        <style>{`
+      <style>
+        {`
           @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
           :root {
-            --primary: #937f6a;
-            --primary-light: #b4a95c;
-            --secondary: #5a374b;
-            --accent: #b4a95c;
+            --primary: #2d6a4f;
+            --primary-light: #40916c;
+            --secondary: #b7b7a4;
+            --accent: #ffca3a;
             --light: #f8f9fa;
-            --dark: #3a4550;
+            --dark: #212529;
             --danger: #ff686b;
+            --success: #52b788;
+            --warning: #ffd166;
+            --info: #4cc9f0;
           }
+            .user-menu {
+  position: relative;
+  background-color: var(--primary-light);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.user-menu:hover {
+  background-color: var(--primary);
+}
+
+.user-menu:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 120%;
+  left: 0;
+  background-color: white;
+  color: var(--dark);
+  padding: 0.5rem 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  border-radius: 4px;
+  min-width: 150px;
+  z-index: 100;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--dark);
+  text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+  background-color: var(--light);
+}
+
 
           body {
             margin: 0;
@@ -222,123 +269,763 @@ function HomeAfter() {
             background-color: #f5f7f9;
           }
 
+          .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+          }
+
+          .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+          }
+          
+          .logo:before {
+            content: "";
+            font-size: 1.8rem;
+          }
+
+          .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-grow: 1;
+            max-width: 600px;
+            position: relative;
+          }
+
+          .search-input {
+            flex-grow: 1;
+            min-width: 200px;
+            border-radius: 50px;
+            border: none;
+            padding-left: 1rem;
+            height: 40px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          }
+
+          .search-button {
+            border-radius: 50px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1.5rem;
+            background-color: var(--accent);
+            border: none;
+            color: var(--dark);
+            font-weight: 600;
+            transition: all 0.3s ease;
+          }
+          
+          .search-button:hover {
+            background-color: #e6b635;
+            transform: translateY(-2px);
+          }
+
+          .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+          }
+
+          .cart-icon {
+            position: relative;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+          }
+          
+          .cart-icon:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+          }
+
+          .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background-color: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+          }
+
+          .login-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            background-color: var(--primary-light);
+            transition: all 0.3s ease;
+          }
+          
+          .login-btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+            color: var(--light);
+          }
+
+          .promo-banner {
+            background: linear-gradient(to right, var(--accent), #ffd56b);
+            text-align: center;
+            padding: 0.75rem;
+            color: var(--dark);
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+          }
+          
+          @keyframes pulse {
+            0% {
+              transform: scale(1);
+            }
+            50% {
+              transform: scale(1.02);
+            }
+            100% {
+              transform: scale(1);
+            }
+          }
+
+          .carousel-container {
+            margin: 1.5rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          }
+          
+          .carousel-slide {
+            position: relative;
+            height: 300px;
+            width: 100%;
+          }
+          
+          .carousel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+          
+          .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 1rem;
+          }
+          
+          .carousel-caption h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+          }
+          
+          .carousel-caption p {
+            margin-top: 0.5rem;
+            font-size: 1rem;
+          }
+
+          .kategori-section {
+            background-color: white;
+            padding: 2rem;
+            margin: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+          }
+          
+          .section-title {
+            color: var(--dark);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-left: 1rem;
+          }
+          
+          .section-title:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 24px;
+            width: 4px;
+            background-color: var(--primary);
+            border-radius: 4px;
+          }
+
+          .kategori-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
+          }
+
+          .kategori-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--light);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+          }
+          
+          .kategori-item:hover {
+            background-color: var(--primary-light);
+            color: white;
+            transform: translateY(-5px);
+          }
+          
+          .kategori-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+          }
+          
+          .kategori-title {
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-align: center;
+          }
+
+          .produk-section {
+            background-color: white;
+            padding: 2rem;
+            margin: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+          }
+
+          .produk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+          }
+
+          .produk-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+          }
+          
+          .produk-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+          }
+          
+          .wishlist-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+          }
+          
+          .wishlist-btn:hover {
+            background-color: white;
+            transform: scale(1.1);
+          }
+          
+          .wishlist-icon {
+            font-size: 1.2rem;
+            color: #adb5bd;
+            transition: all 0.3s ease;
+          }
+          
+          .wishlist-active {
+            color: var(--danger);
+          }
+          
+          .produk-img-container {
+            height: 180px;
+            overflow: hidden;
+          }
+          
+          .produk-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+          }
+          
+          .produk-card:hover .produk-img {
+            transform: scale(1.05);
+          }
+          
+          .produk-info {
+            padding: 1rem;
+          }
+          
+          .produk-nama {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            color: var(--dark);
+          }
+          
+          .produk-harga {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+          }
+          
+          .harga-diskon {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary);
+          }
+          
+          .harga-asli {
+            font-size: 0.9rem;
+            color: #adb5bd;
+            text-decoration: line-through;
+          }
+          
+          .diskon-badge {
+            background-color: var(--danger);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+          }
+          
           .product-rating {
             font-size: 0.9rem;
             color: #ffc107;
             margin-bottom: 0.5rem;
           }
-
+          
           .rating-number {
             color: #6c757d;
             font-size: 0.8rem;
             margin-left: 0.25rem;
           }
+          
+          .produk-kondisi {
+            font-size: 0.8rem;
+            color: #6c757d;
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+          }
+          
+          .produk-action {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+          }
+          
+          .btn-beli {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-grow: 1;
+          }
+          
+          .btn-beli:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+          }
+          
+          .btn-cart {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            padding: 0.5rem;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          
+          .btn-cart:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+          }
 
+          footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+          }
+          
+          .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+          }
+          
+          .footer-section h4 {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+          }
+          
+          .footer-section h4:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 2px;
+            width: 40px;
+            background-color: var(--primary-light);
+          }
+          
+          .footer-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+          }
+          
+          .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+          }
+          
+          .contact-item i {
+            color: var(--primary-light);
+          }
+          
+          .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+          }
+          
+          .footer-link {
+            color: #ced4da;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+          }
+          
+          .footer-link:before {
+            content: "›";
+            color: var(--primary-light);
+            font-size: 1.2rem;
+          }
+          
+          .footer-link:hover {
+            color: white;
+            transform: translateX(5px);
+          }
+          
+          .social-media {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+          }
+          
+          .social-icon {
+            background-color: #343a40;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+          }
+          
+          .social-icon:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-3px);
+          }
+          
+          .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #343a40;
+            color: #adb5bd;
+            font-size: 0.9rem;
+          }
+          
+          .alert-custom {
+            margin: 1rem;
+            border-radius: 8px;
+          }
+          
           .star-filled {
             color: #ffc107;
           }
-
+          
           .star-half {
             color: #ffc107;
             position: relative;
           }
-
+          
           .star-empty {
             color: #e0e0e0;
           }
-
-          .wishlist-icon {
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            color: #adb5bd;
+          
+          /* Responsive Styles */
+          @media (max-width: 768px) {
+            .header {
+              padding: 1rem;
+            }
+            
+            .search-bar {
+              max-width: none;
+            }
+            
+            .carousel-container {
+              margin: 1rem;
+            }
+            
+            .carousel-slide {
+              height: 200px;
+            }
+            
+            .kategori-section, .produk-section {
+              margin: 1rem;
+              padding: 1.5rem;
+            }
+            
+            .produk-grid {
+              grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+            
+            .produk-img-container {
+              height: 150px;
+            }
           }
-
-          .wishlist-active {
-            color: var(--danger);
+          
+          @media (max-width: 576px) {
+            .search-input {
+              min-width: 120px;
+            }
+            
+            .kategori-grid {
+              grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+            
+            .produk-grid {
+              grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+            
+            .produk-img-container {
+              height: 130px;
+            }
+            
+            .footer-container {
+              grid-template-columns: 1fr;
+            }
+              
           }
-        `}</style>
+        `}
+      </style>
 
-        <Navbar expand="lg" variant="dark" style={{backgroundColor: 'var(--primary)'}} sticky="top" className="px-3">
-          <Container fluid>
-            <Navbar.Brand as={Link} to="/" className="fw-bold" style={{color: 'var(--light)'}}>ReuseMart</Navbar.Brand>
-            <Navbar.Toggle aria-controls="navbarScroll" />
-            <Navbar.Collapse id="navbarScroll">
-              <Form className="d-flex ms-auto me-auto" onSubmit={handleSearch} style={{maxWidth: '600px', width: '100%'}}>
-                <InputGroup>
-                  <Form.Control
-                    type="search"
-                    placeholder="Cari produk preloved..."
-                    className="me-2 rounded-pill"
-                    value={searchTerm}
-                    onChange={e => setSearchTerm(e.target.value)}
-                    aria-label="Search"
-                  />
-                  <Button type="submit" variant="warning" className="rounded-pill px-4" disabled={loading}>
-                    {loading ? <Spinner animation="border" size="sm" /> : <><FaSearch className="me-2" /> Cari</>}
-                  </Button>
-                </InputGroup>
-              </Form>
+      <header className="header">
+        <Link to="/" className="logo">ReuseMart</Link>
+        
+        <form className="search-bar" onSubmit={handleSearch}>
+          <Form.Control
+            type="text"
+            placeholder="Cari produk preloved..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="search-input"
+          />
+          <Button type="submit" disabled={loading} className="search-button">
+            {loading ? <Spinner animation="border" size="sm" /> : <><FaSearch className="me-2" /> Cari</>}
+          </Button>
+        </form>
+        
+        <div className="user-actions">
+          <Link to="/cart" className="cart-icon">
+            <FaShoppingCart />
+            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+          </Link>
+          
+          <div className="user-menu">
+  <FaUser /> {user.name}
+  <div className="dropdown-menu">
+    <Link to="/profile">Profil</Link>
+    <Link to="/logout">Logout</Link>
+  </div>
+</div>
 
-              <Nav className="ms-auto align-items-center gap-3">
-                <Nav.Link as={Link} to="/keranjang" className="position-relative" style={{color: 'var(--light)', fontSize: '1.5rem'}}>
-                  <FaShoppingCart />
-                  {cartCount > 0 && (
-                    <Badge bg="danger" pill style={{position: 'absolute', top: '-8px', right: '-10px'}}>
-                      {cartCount}
-                    </Badge>
-                  )}
-                </Nav.Link>
+        </div>
+      </header>
 
-                <NavDropdown 
-                  title={<><FaUser className="me-2" /> {user.name}</>} 
-                  id="user-menu-dropdown" 
-                  align="end"
-                  show={showUserMenu}
-                  onToggle={() => setShowUserMenu(!showUserMenu)}
-                  menuVariant="light"
-                >
-                  <NavDropdown.Item as={Link} to="/profil-pembeli" onClick={() => setShowUserMenu(false)}>Profil</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="/" onClick={() => { setShowUserMenu(false); toast.info("Anda telah logout."); }}>Logout</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="/info-tambahan" onClick={() => setShowUserMenu(false)}>Info Tambahan</NavDropdown.Item>
-                </NavDropdown>
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
+      {showAlert && (
+        <Alert variant="success" onClose={() => setShowAlert(false)} dismissible className="alert-custom">
+          <Alert.Heading>Hasil Pencarian</Alert.Heading>
+          <p>Menampilkan hasil untuk "{searchTerm}"</p>
+        </Alert>
+      )}
 
-        <Container>
-          {showAlert && (
-            <Alert variant="success" onClose={() => setShowAlert(false)} dismissible className="my-3">
-              <Alert.Heading>Hasil Pencarian</Alert.Heading>
-              <p>Menampilkan hasil untuk "{searchTerm}"</p>
-            </Alert>
-          )}
-
-          <div className="promo-banner text-center my-3 p-3 rounded" style={{
-            background: 'linear-gradient(to right, var(--accent), #ffd56b)', 
-            color: 'var(--dark)', 
-            fontWeight: 'bold',
-            letterSpacing: '1px',
-            animation: 'pulse 2s infinite'
-          }}>
-            Gunakan promo menarik lainnya !! 💝
-          </div>
-
-          {/* Carousel */}
-          <div id="homeCarousel" className="carousel slide mb-4" data-bs-ride="carousel">
-            <div className="carousel-inner rounded shadow-sm">
-              {iklanList.map((iklan, index) => (
-                <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-                  <img src={iklan.gambar} alt={iklan.alt} className="d-block w-100" style={{height: '300px', objectFit: 'cover'}} />
-                  <div className="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+      <div className="promo-banner">Gunakan promo menarik lainnya !! 💝</div>
+      
+      <div className="carousel-container">
+        <div id="homeCarousel" className="carousel slide" data-bs-ride="carousel">
+          <div className="carousel-inner">
+            {iklanList.map((iklan, index) => (
+              <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                <div className="carousel-slide">
+                  <img src={iklan.gambar} alt={iklan.alt} className="carousel-image" />
+                  <div className="carousel-caption">
                     <h3>{iklan.title}</h3>
                     <p>{iklan.description}</p>
                   </div>
                 </div>
-              ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      
+      <div className="kategori-section">
+        <h2 className="section-title">Kategori</h2>
+        <div className="kategori-grid">
+          {kategoriList.map((kategori, index) => (
+            <div key={index} className="kategori-item">
+              <div className="kategori-icon">{kategori.icon}</div>
+              <div className="kategori-title">{kategori.title}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="produk-section">
+        <h2 className="section-title">Rekomendasi Produk</h2>
+        <div className="produk-grid">
+          {produkList.map((produk) => (
+            <div key={produk.id} className="produk-card">
+              <button 
+                className="wishlist-btn"
+                onClick={() => handleAddToWishlist(produk.id)}
+              >
+                <FaHeart className={`wishlist-icon ${wishlist[produk.id] ? 'wishlist-active' : ''}`} />
+              </button>
+              
+              <div className="produk-img-container">
+                <img src={produk.gambar} alt={produk.nama} className="produk-img" />
+              </div>
+              
+              <div className="produk-info">
+                <div className="produk-nama">{produk.nama}</div>
+                
+                <div className="produk-harga">
+                  <span className="harga-diskon">
+                    {formatRupiah(hitungDiskon(produk.harga, produk.diskon))}
+                  </span>
+                  
+                  {produk.diskon > 0 && (
+                    <span className="harga-asli">{formatRupiah(produk.harga)}</span>
+                  )}
+                  
+                  {produk.diskon > 0 && (
+                    <Badge bg="danger" className="diskon-badge">-{produk.diskon}%</Badge>
+                  )}
+                </div>
+                
+                {renderRating(produk.rating)}
+                
+                <span className="produk-kondisi">{produk.kondisi}</span>
+                
+                <div className="produk-action">
+                  <Button className="btn-beli">Beli Sekarang</Button>
+                  <Button className="btn-cart">
+                    <FaShoppingCart />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <footer>
+        <div className="footer-container">
+          <div className="footer-section">
+            <h4>Tentang ReuseMart</h4>
+            <p>ReuseMart adalah marketplace untuk produk-produk preloved berkualitas. Kami mendukung gaya hidup berkelanjutan dengan memberikan kesempatan kedua bagi barang-barang yang masih layak pakai.</p>
+            
+            <div className="social-media">
+              <div className="social-icon">
+                <FaFacebook />
+              </div>
+              <div className="social-icon">
+                <FaTwitter />
+              </div>
+              <div className="social-icon">
+                <FaInstagram />
+              </div>
             </div>
           </div>
-        </Container>
+          
+          <div className="footer-section">
+            <h4>Layanan Pelanggan</h4>
+            <div className="footer-links">
+              <a href="#" className="footer-link">Cara Berbelanja</a>
+              <a href="#" className="footer-link">Metode Pembayaran</a>
+              <a href="#" className="footer-link">Pengiriman & Ongkos Kirim</a>
+              <a href="#" className="footer-link">Pengembalian & Refund</a>
+              <a href="#" className="footer-link">FAQ</a>
+            </div>
           </div>
           
           <div className="footer-section">
@@ -378,224 +1065,6 @@ function HomeAfter() {
         <div className="footer-bottom">
           <p>&copy; {new Date().getFullYear()} ReuseMart. Semua hak dilindungi.</p>
         </div>
-
-        {/* Kategori */}
-        <section className="kategori-section bg-white rounded shadow-sm p-4 mb-4">
-          <h2 className="section-title" style={{color: 'var(--dark)', fontWeight: '600', marginBottom: '1.5rem', position: 'relative', paddingLeft: '1rem'}}>
-            Kategori
-            <span style={{
-              position: 'absolute',
-              left: 0,
-              top: '50%',
-              transform: 'translateY(-50%)',
-              height: '24px',
-              width: '4px',
-              backgroundColor: 'var(--primary)',
-              borderRadius: '4px'
-            }} />
-          </h2>
-          <Row xs={2} sm={4} md={5} lg={10} className="g-3">
-            {kategoriList.map((kategori, index) => (
-              <Col key={index} className="d-flex flex-column align-items-center justify-content-center rounded p-3" style={{
-                backgroundColor: 'var(--light)', cursor: 'pointer', boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.backgroundColor = 'var(--primary-light)';
-                e.currentTarget.style.color = 'white';
-                e.currentTarget.style.transform = 'translateY(-5px)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.backgroundColor = 'var(--light)';
-                e.currentTarget.style.color = 'inherit';
-                e.currentTarget.style.transform = 'none';
-              }}>
-                <div style={{fontSize: '2rem', marginBottom: '0.5rem'}}>{kategori.icon}</div>
-                <div style={{fontSize: '0.8rem', fontWeight: '500', textAlign: 'center'}}>{kategori.title}</div>
-              </Col>
-            ))}
-          </Row>
-        </section>
-
-        {/* Produk */}
-        <section className="produk-section bg-white rounded shadow-sm p-4 mb-5">
-          <h2 className="section-title" style={{color: 'var(--dark)', fontWeight: '600', marginBottom: '1.5rem', position: 'relative', paddingLeft: '1rem'}}>
-            Rekomendasi Produk
-            <span style={{
-              position: 'absolute',
-              left: 0,
-              top: '50%',
-              transform: 'translateY(-50%)',
-              height: '24px',
-              width: '4px',
-              backgroundColor: 'var(--primary)',
-              borderRadius: '4px'
-            }} />
-          </h2>
-          <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-            {produkList.map((produk) => (
-              <Col key={produk.id}>
-                <div className="produk-card position-relative rounded shadow-sm overflow-hidden" style={{transition: 'all 0.3s ease'}}>
-                  <Button
-                    className="wishlist-btn position-absolute top-0 end-0 m-2 p-2 rounded-circle"
-                    variant="light"
-                    onClick={() => handleAddToWishlist(produk.id)}
-                    style={{ zIndex: 10, color: wishlist[produk.id] ? 'var(--danger)' : '#adb5bd' }}
-                  >
-                    <FaHeart />
-                  </Button>
-
-                  <div className="produk-img-container" style={{height: '180px', overflow: 'hidden'}}>
-                    <img src={produk.gambar} alt={produk.nama} className="w-100 h-100" style={{objectFit: 'cover', transition: 'transform 0.5s ease'}} />
-                  </div>
-
-                  <div className="produk-info p-3">
-                    <div className="produk-nama fw-semibold mb-2" style={{color: 'var(--dark)', fontSize: '1rem'}}>{produk.nama}</div>
-
-                    <div className="produk-harga d-flex align-items-center gap-2 mb-2">
-                      <span className="harga-diskon fw-bold" style={{color: 'var(--primary)', fontSize: '1.1rem'}}>
-                        {formatRupiah(hitungDiskon(produk.harga, produk.diskon))}
-                      </span>
-                      {produk.diskon > 0 && (
-                        <span className="harga-asli text-muted text-decoration-line-through">
-                          {formatRupiah(produk.harga)}
-                        </span>
-                      )}
-                      {produk.diskon > 0 && (
-                        <Badge bg="danger" className="diskon-badge">-{produk.diskon}%</Badge>
-                      )}
-                    </div>
-
-                    {renderRating(produk.rating)}
-
-                    <span className="produk-kondisi d-inline-block mt-1 px-2 py-1 rounded" style={{fontSize: '0.8rem', color: '#6c757d', backgroundColor: '#f8f9fa'}}>
-                      {produk.kondisi}
-                    </span>
-
-                    <div className="produk-action d-flex justify-content-between mt-3">
-                      <Button className="btn-beli flex-grow-1 me-2" style={{backgroundColor: 'var(--primary)', color: 'white', border: 'none'}}>
-                        Beli Sekarang
-                      </Button>
-                      <Button variant="outline-primary" className="btn-cart d-flex align-items-center justify-content-center p-2" style={{minWidth: '44px'}}>
-                        <FaShoppingCart />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </Col>
-            ))}
-          </Row>
-        </section>
-      </Container>
-
-      <footer style={{backgroundColor: 'var(--dark)', color: 'white', padding: '3rem 2rem'}}>
-        <Container>
-          <Row xs={1} md={4} className="gap-4">
-            <Col>
-              <h4 style={{color: 'var(--accent)', fontSize: '1.2rem', marginBottom: '1.5rem', position: 'relative', paddingBottom: '0.5rem'}}>
-                Tentang ReuseMart
-                <span style={{
-                  content: '""',
-                  position: 'absolute',
-                  left: 0,
-                  bottom: 0,
-                  height: '2px',
-                  width: '40px',
-                  backgroundColor: 'var(--primary-light)'
-                }} />
-              </h4>
-              <p>ReuseMart adalah marketplace untuk produk-produk preloved berkualitas. Kami mendukung gaya hidup berkelanjutan dengan memberikan kesempatan kedua bagi barang-barang yang masih layak pakai.</p>
-              <div className="social-media d-flex gap-3 mt-3">
-                <div className="social-icon d-flex align-items-center justify-content-center rounded-circle bg-secondary" style={{width: '36px', height: '36px', cursor: 'pointer'}}>
-                  <FaFacebook color="white" />
-                </div>
-                <div className="social-icon d-flex align-items-center justify-content-center rounded-circle bg-secondary" style={{width: '36px', height: '36px', cursor: 'pointer'}}>
-                  <FaTwitter color="white" />
-                </div>
-                <div className="social-icon d-flex align-items-center justify-content-center rounded-circle bg-secondary" style={{width: '36px', height: '36px', cursor: 'pointer'}}>
-                  <FaInstagram color="white" />
-                </div>
-              </div>
-            </Col>
-
-            <Col>
-              <h4 style={{color: 'var(--accent)', fontSize: '1.2rem', marginBottom: '1.5rem', position: 'relative', paddingBottom: '0.5rem'}}>
-                Layanan Pelanggan
-                <span style={{
-                  content: '""',
-                  position: 'absolute',
-                  left: 0,
-                  bottom: 0,
-                  height: '2px',
-                  width: '40px',
-                  backgroundColor: 'var(--primary-light)'
-                }} />
-              </h4>
-              <Nav className="flex-column">
-                {["Cara Berbelanja", "Metode Pembayaran", "Pengiriman & Ongkos Kirim", "Pengembalian & Refund", "FAQ"].map((item, i) => (
-                  <Nav.Link key={i} href="#" className="text-light ps-0">
-                    &rsaquo; {item}
-                  </Nav.Link>
-                ))}
-              </Nav>
-            </Col>
-
-            <Col>
-              <h4 style={{color: 'var(--accent)', fontSize: '1.2rem', marginBottom: '1.5rem', position: 'relative', paddingBottom: '0.5rem'}}>
-                Informasi
-                <span style={{
-                  content: '""',
-                  position: 'absolute',
-                  left: 0,
-                  bottom: 0,
-                  height: '2px',
-                  width: '40px',
-                  backgroundColor: 'var(--primary-light)'
-                }} />
-              </h4>
-              <Nav className="flex-column">
-                {["Tentang Kami", "Syarat & Ketentuan", "Kebijakan Privasi", "Blog ReuseMart", "Karir"].map((item, i) => (
-                  <Nav.Link key={i} href="#" className="text-light ps-0">
-                    &rsaquo; {item}
-                  </Nav.Link>
-                ))}
-              </Nav>
-            </Col>
-
-            <Col>
-              <h4 style={{color: 'var(--accent)', fontSize: '1.2rem', marginBottom: '1.5rem', position: 'relative', paddingBottom: '0.5rem'}}>
-                Hubungi Kami
-                <span style={{
-                  content: '""',
-                  position: 'absolute',
-                  left: 0,
-                  bottom: 0,
-                  height: '2px',
-                  width: '40px',
-                  backgroundColor: 'var(--primary-light)'
-                }} />
-              </h4>
-              <div className="footer-contact d-flex flex-column gap-3">
-                <div className="contact-item d-flex align-items-center gap-3">
-                  <span role="img" aria-label="email">📧</span> cs@reusemart.id
-                </div>
-                <div className="contact-item d-flex align-items-center gap-3">
-                  <span role="img" aria-label="phone">📱</span> +62 812 3456 7890
-                </div>
-                <div className="contact-item d-flex align-items-center gap-3">
-                  <span role="img" aria-label="office">🏢</span> Jl. Eco Living No. 123, Jakarta Selatan
-                </div>
-                <div className="contact-item d-flex align-items-center gap-3">
-                  <span role="img" aria-label="clock">⏰</span> Senin - Jumat: 08.00 - 17.00 WIB
-                </div>
-              </div>
-            </Col>
-          </Row>
-
-          <div className="footer-bottom text-center mt-5 pt-3 border-top border-secondary" style={{color: '#adb5bd', fontSize: '0.9rem'}}>
-            &copy; {new Date().getFullYear()} ReuseMart. Semua hak dilindungi.
-          </div>
-        </Container>
       </footer>
     </>
   );

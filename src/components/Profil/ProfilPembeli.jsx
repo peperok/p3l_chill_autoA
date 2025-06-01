@@ -314,9 +314,9 @@ const ProfilPembeli = () => {
     try {
       // TODO: Ganti dengan pemanggilan API sebenarnya
       setProfile({
-        name: 'Wira Utama',
-        username: 'wira_utama',
-        email: 'yudhikawirautam@gmail.com',
+        name: 'Maria Sirait',
+        username: 'maria_sirait',
+        email: 'maria.sirait@example.com',
         phone: '+62 811-2345-6789',
         profilePicture: null,
         points: 750,
