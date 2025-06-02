@@ -2,15 +2,14 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Container, Row, Col, Spinner } from "react-bootstrap";
 
-const FormRegister = () => {
+const FormOrganisasi = () => {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const [data, setData] = useState({
-    username: "",
     email: "",
     password: "",
-    namaOrganisasi: "",
-    alamat: "",
+    nama_organisasi: "",
+    alamat_organisasi: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -20,11 +19,10 @@ const FormRegister = () => {
 
     // Validasi: semua field wajib diisi
     if (
-      newData.username.trim().length > 0 &&
       newData.email.trim().length > 0 &&
       newData.password.length > 0 &&
-      newData.namaOrganisasi.trim().length > 0 &&
-      newData.alamat.trim().length > 0
+      newData.nama_organisasi.trim().length > 0 &&
+      newData.alamat_organisasi.trim().length > 0
     ) {
       setIsDisabled(false);
     } else {
@@ -32,17 +30,38 @@ const FormRegister = () => {
     }
   };
 
-  const Register = (event) => {
+  const Register = async (event) => {
     event.preventDefault();
     setLoading(true);
+
     try {
-      setTimeout(() => {
-        navigate("/homeafter");
-        console.log("Registration successful");
-        setLoading(false);
-      }, 1500);
-    } catch (err) {
-      console.error(err);
+      const response = await fetch(
+        "http://localhost:8000/api/registerOrganisasi",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const result = await response.json();
+      console.log("Server response:", result); // Untuk debug
+
+      if (response.ok) {
+        alert("Registrasi berhasil!");
+        navigate("/HomeOrganisasi");
+      } else {
+        alert(
+          "Registrasi gagal: " +
+            (result.message || "Periksa kembali data Anda.")
+        );
+      }
+    } catch (error) {
+      console.error("Error saat registrasi:", error);
+      alert("Terjadi kesalahan saat mengirim data.");
+    } finally {
       setLoading(false);
     }
   };
@@ -91,26 +110,26 @@ const FormRegister = () => {
                 />
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="namaOrganisasi">
+              <Form.Group className="mb-3" controlId="nama_organisasi">
                 <Form.Label>Nama Organisasi</Form.Label>
                 <Form.Control
                   type="text"
-                  name="namaOrganisasi"
+                  name="nama_organisasi"
                   placeholder="Masukkan Nama Organisasi"
-                  value={data.namaOrganisasi}
+                  value={data.nama_organisasi}
                   onChange={handleChange}
                   required
                 />
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="alamat">
+              <Form.Group className="mb-3" controlId="alamat_organisasi">
                 <Form.Label>Alamat</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows={2}
-                  name="alamat"
+                  name="alamat_organisasi"
                   placeholder="Masukkan Alamat"
-                  value={data.alamat}
+                  value={data.alamat_organisasi}
                   onChange={handleChange}
                   required
                 />
@@ -144,7 +163,10 @@ const FormRegister = () => {
             <div className="text-center mt-4 text-muted">
               <p>
                 Already have an Account?{" "}
-                <Link to="/login" style={{ color: "#5a374b", fontWeight: "600" }}>
+                <Link
+                  to="/login"
+                  style={{ color: "#5a374b", fontWeight: "600" }}
+                >
                   Click Here!
                 </Link>
               </p>
@@ -156,4 +178,4 @@ const FormRegister = () => {
   );
 };
 
-export default FormRegister;
+export default FormOrganisasi;

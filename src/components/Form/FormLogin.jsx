@@ -1,64 +1,34 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Form, Button, Container, Row, Col, Spinner } from "react-bootstrap";
+import { SignIn } from "../../api/apiAuth";
+import { toast } from "react-toastify";
 
 const FormLogin = () => {
-  const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(true);
   const [data, setData] = useState({
     email: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const handleChange = (event) => {
     const newData = { ...data, [event.target.name]: event.target.value };
     setData(newData);
 
-    if (newData.email.trim().length > 0 && newData.password.length > 0) {
-      setIsDisabled(false);
-    } else if (
-      newData.email.trim() === "admin123@gmail.com" &&
-      newData.password === "admin123"
-    ) {
-      setIsDisabled(true);
-    } else {
-      setIsDisabled(true);
-    }
+    setIsDisabled(
+      !(newData.email.trim().length > 0 && newData.password.length > 0)
+    );
   };
 
-  const Login = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
     setLoading(true);
     try {
-      setTimeout(() => {
-        if (data.email === "admin123@gmail.com" && data.password === "admin123") {
-          navigate("/admin");
-          sessionStorage.setItem("token", "mock-admin-token");
-          sessionStorage.setItem(
-            "user",
-            JSON.stringify({
-              email: data.email,
-              role: "admin",
-            })
-          );
-          console.log("Admin login successful");
-        } else {
-          navigate("/homeafter");
-          sessionStorage.setItem("token", "mock-user-token");
-          sessionStorage.setItem(
-            "user",
-            JSON.stringify({
-              email: data.email,
-              role: "user",
-            })
-          );
-          console.log("User login successful");
-        }
-        setLoading(false);
-      }, 1500);
-    } catch (err) {
-      console.error(err);
+      await SignIn(data);
+    } catch (error) {
+      toast.error("Login gagal: " + (error.message || "Terjadi kesalahan"));
+    } finally {
       setLoading(false);
     }
   };
@@ -79,10 +49,10 @@ const FormLogin = () => {
               <h3 className="mb-2">
                 <strong>Reuse Mart</strong>
               </h3>
-              <p>Selamat datang. Silahkan masuk ke akun Anda.</p>
+              <p>Selamat datang. Silakan masuk ke akun Anda.</p>
             </div>
 
-            <Form onSubmit={Login}>
+            <Form onSubmit={handleLogin}>
               <Form.Group className="mb-3" controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
@@ -131,20 +101,6 @@ const FormLogin = () => {
                 )}
               </Button>
             </Form>
-
-            <div className="text-center mt-4 text-muted">
-              <p>
-                Don't have an Account? Create Account{" "}
-                <p></p>
-                <Link to="/formorganisasi" style={{ color: "#5a374b", fontWeight: "600" }}>
-                  Organitation
-                </Link>
-                <a> or </a>
-                <Link to="/register" style={{ color: "#5a374b", fontWeight: "600" }}>
-                  Buyer
-                </Link>
-              </p>
-            </div>
           </div>
         </Col>
       </Row>
