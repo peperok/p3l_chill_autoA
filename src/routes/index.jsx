@@ -1,14 +1,21 @@
+import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+
 import HomeBefore from "../components/Home/HomeBefore";
 import HomeAfter from "../components/Home/HomeAfter";
-import LoginForm from "../pages/auth/LoginPage";
+import LoginPage from "../pages/auth/LoginPage";
 import RegisterOrganisasiPage from "../pages/auth/RegisterOrganisasi";
 import RegisterPembeliPage from "../pages/auth/RegisterPembeli";
-import LoginPage from "../pages/auth/LoginPage";
 import HomeOrganisasi from "../components/Home/HomeOrganisasi";
 import HomeAdmin from "../components/Home/HomeAdmin";
 import HomeOwner from "../components/Home/HomeOwner";
+import HomeGudang from "../components/Home/HomeGudang";
+import ProfilPenitip from "../components/Profil/ProfilPenitip";
+import Keranjang from "../components/Home/Keranjang";
+import DataPenitip from "../components/Admin/DataPenitip";
+import Komisi from "../components/Admin/Komisi";
+import PaymentAndRating from "../components/Home/PaymentAndRating";
 
 const router = createBrowserRouter([
   {
@@ -16,48 +23,60 @@ const router = createBrowserRouter([
     element: <div>Routes Not Found!</div>,
   },
   {
-    children: [
-      {
-        path: "/",
-        element: <HomeBefore />,
-      },
-      {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      {
-        path: "/registerPembeli",
-        element: <RegisterPembeliPage />,
-      },
-      {
-        path: "/registerOrganisasi",
-        element: <RegisterOrganisasiPage />,
-      },
-      {
-        path: "/homeAfter",
-        element: <HomeAfter />,
-      },
-      {
-        path: "/homeOrganisasi",
-        element: <HomeOrganisasi />,
-      },
-      {
-        path: "/homeAdmin",
-        element: <HomeAdmin />,
-      },
-      {
-        path: "/homeOwner",
-        element: <HomeOwner />,
-      },
-      // {
-      //   path: "/homeCS",
-      //   element: <HomeCS />,
-      // },
-      // {
-      //   path: "/homeGudang",
-      //   element: <HomeGudang />,
-      // },
-    ],
+    path: "/",
+    element: <HomeBefore />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/registerPembeli",
+    element: <RegisterPembeliPage />,
+  },
+  {
+    path: "/registerOrganisasi",
+    element: <RegisterOrganisasiPage />,
+  },
+  {
+    path: "/homeAfter",
+    element: <HomeAfter />,
+  },
+  {
+    path: "/homeOrganisasi",
+    element: <HomeOrganisasi />,
+  },
+  {
+    path: "/homeAdmin",
+    element: <HomeAdmin />,
+  },
+  {
+    path: "/homeOwner",
+    element: <HomeOwner />,
+  },
+  {
+    path: "/homeGudang",
+    element: <HomeGudang />,
+  },
+  {
+    path: "/profilPenitip",
+    element: <ProfilPenitip />,
+  },
+  {
+    path: "/keranjang",
+    element: <Keranjang />,
+  },
+  {
+    path: "/paymentSuccess",
+    element: <PaymentAndRating productId={1} />, 
+  },
+  {
+    path: "/admin/penitip",
+    element: <DataPenitip />,
+  },
+  {
+    path: "/admin/komisi",
+    element: <Komisi />,
   },
 ]);
 

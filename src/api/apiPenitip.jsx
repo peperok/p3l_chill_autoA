@@ -61,6 +61,7 @@ export const UpdatePenitip = async (values) => {
   }
 };
 
+//delete
 export const DeletePenitip = async (id) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -74,5 +75,24 @@ export const DeletePenitip = async (id) => {
     return response.data;
   } catch (error) {
     throw error.response.data;
+  }
+};
+
+
+export const UpdateRatingPenitip = async (id, rating) => {
+  try {
+    const response = await useAxios.post(
+      `/penitip/${id}/rating`,
+      { rating },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
   }
 };

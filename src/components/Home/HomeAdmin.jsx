@@ -11,6 +11,7 @@ const navItems = [
   "Data Organisasi",
   "Profile",
   "Register Pembeli",
+  "Komisi",
 ];
 
 const PlaceholderPage = ({ title }) => (
