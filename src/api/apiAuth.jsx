@@ -50,7 +50,7 @@ const SignIn = async (data) => {
 
   for (const role of roles) {
     try {
-      // Kirim jabatan hanya jika pegawai
+
       const requestData =
         role.role === "Pegawai" ? { ...data, jabatan: data.jabatan } : data;
 
@@ -63,7 +63,7 @@ const SignIn = async (data) => {
       localStorage.setItem("role", role.role);
       localStorage.setItem("user", JSON.stringify(detail));
 
-      // Hitung dan ambil URL redirect
+
       const redirectUrl = role.redirectLogic(detail);
 
       toast.success(`Berhasil login sebagai ${role.role}`);

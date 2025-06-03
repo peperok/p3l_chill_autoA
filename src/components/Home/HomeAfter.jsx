@@ -26,8 +26,8 @@ import {
 } from "react-icons/fa";
 
 const user = {
-  name: "Wira Utama",
-  email: "wira@example.com",
+  name: "Wirayudhika",
+  email: "wira@gmail.com",
 };
 
 function HomeAfter() {

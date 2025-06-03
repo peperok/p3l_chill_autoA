@@ -6,21 +6,8 @@ import {
   Row,
   Col,
   Card,
-  Nav,
+  Form,
 } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
-
-const navItems = [
-  "Dashboard",
-  "Barang",
-  "Merchandise",
-  "Data Pegawai",
-  "Data Pembeli",
-  "Data Penitip",
-  "Data Organisasi",
-  "Request Donasi",
-  "Profile",
-];
 
 const styles = {
   sidebar: {
@@ -63,34 +50,23 @@ const styles = {
   },
 };
 
-const MOCK_TRANSACTIONS = [
-  {
-    id: "TRX001",
-    hunter: "Hunter A",
-    penitip: "Penitip X",
-    pembeli: "Pembeli 1",
-    barang: "Tas Kulit",
-    hargaJual: 1000000,
-    tanggalJual: "2024-05-01",
-    durasiTitipHari: 10,
-    perpanjangan: false,
-  },
-  {
-    id: "TRX002",
-    hunter: "Hunter B",
-    penitip: "Penitip Y",
-    pembeli: "Pembeli 2",
-    barang: "Sepatu",
-    hargaJual: 750000,
-    tanggalJual: "2024-05-10",
-    durasiTitipHari: 5,
-    perpanjangan: true,
-  },
-];
-
 const Komisi = () => {
+  const [transactions, setTransactions] = useState([]);
   const [saldoPenitip, setSaldoPenitip] = useState({});
   const [poinPembeli, setPoinPembeli] = useState({});
+
+  // Form state
+  const [formData, setFormData] = useState({
+    id: "",
+    hunter: "",
+    penitip: "",
+    pembeli: "",
+    barang: "",
+    hargaJual: "",
+    tanggalJual: "",
+    durasiTitipHari: "",
+    perpanjangan: false,
+  });
 
   const diffDays = (date1, date2) => {
     const d1 = new Date(date1);
@@ -111,164 +87,273 @@ const Komisi = () => {
     return komisi;
   };
 
-  const tambahSaldoPenitip = (nama, jumlah) => {
-    setSaldoPenitip((prev) => ({
-      ...prev,
-      [nama]: (prev[nama] || 0) + jumlah,
-    }));
-  };
-
-  const tambahPoinPembeli = (nama, jumlahPoin) => {
-    setPoinPembeli((prev) => ({
-      ...prev,
-      [nama]: (prev[nama] || 0) + jumlahPoin,
-    }));
-  };
-
+  // Update saldo dan poin berdasarkan semua transaksi
   useEffect(() => {
-    MOCK_TRANSACTIONS.forEach((trx) => {
+    let saldoTemp = {};
+    let poinTemp = {};
+
+    transactions.forEach((trx) => {
       const komisiHunter = trx.hargaJual * hunterRate;
       const komisiReuseMart = hitungKomisiReuseMart(trx);
       const penghasilanPenitip = trx.hargaJual - komisiHunter - komisiReuseMart;
 
-      tambahSaldoPenitip(trx.penitip, penghasilanPenitip);
-      tambahPoinPembeli(trx.pembeli, Math.floor(trx.hargaJual * poinPerRupiah));
+      saldoTemp[trx.penitip] = (saldoTemp[trx.penitip] || 0) + penghasilanPenitip;
+      poinTemp[trx.pembeli] = (poinTemp[trx.pembeli] || 0) + Math.floor(trx.hargaJual * poinPerRupiah);
     });
-  }, []);
+
+    setSaldoPenitip(saldoTemp);
+    setPoinPembeli(poinTemp);
+  }, [transactions]);
+
+  // Handle perubahan input form
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  // Submit form tambah transaksi
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Validasi sederhana
+    if (
+      !formData.id ||
+      !formData.hunter ||
+      !formData.penitip ||
+      !formData.pembeli ||
+      !formData.barang ||
+      !formData.hargaJual ||
+      !formData.tanggalJual ||
+      !formData.durasiTitipHari
+    ) {
+      alert("Mohon isi semua field dengan lengkap.");
+      return;
+    }
+
+    // Tambah transaksi baru
+    setTransactions((prev) => [
+      ...prev,
+      {
+        id: formData.id,
+        hunter: formData.hunter,
+        penitip: formData.penitip,
+        pembeli: formData.pembeli,
+        barang: formData.barang,
+        hargaJual: Number(formData.hargaJual),
+        tanggalJual: formData.tanggalJual,
+        durasiTitipHari: Number(formData.durasiTitipHari),
+        perpanjangan: formData.perpanjangan,
+      },
+    ]);
+
+    // Reset form
+    setFormData({
+      id: "",
+      hunter: "",
+      penitip: "",
+      pembeli: "",
+      barang: "",
+      hargaJual: "",
+      tanggalJual: "",
+      durasiTitipHari: "",
+      perpanjangan: false,
+    });
+  };
 
   return (
-    <div className="d-flex vh-100" style={{ fontFamily: "Poppins, sans-serif" }}>
-      {/* Sidebar */}
-      <div style={styles.sidebar}>
-        <h4 className="text-center mb-4">ReuseMart</h4>
-        {navItems.map((item) => (
-          <NavLink
-            key={item}
-            to={`/admin/${item.replace(/ /g, "").toLowerCase()}`}
-            style={({ isActive }) =>
-              isActive
-                ? { ...styles.navLink, ...styles.activeLink }
-                : styles.navLink
-            }
-          >
-            {item}
-          </NavLink>
-        ))}
-        <NavLink
-          to="/login"
-          className="mt-auto btn btn-warning text-dark text-center"
-          style={{ backgroundColor: "#937f6a", border: "none" }}
-        >
-          Logout
-        </NavLink>
-      </div>
+    <div style={{ padding: "20px", fontFamily: "Poppins, sans-serif" }}>
+      <h3 style={{ marginBottom: "1rem", color: "#5a374b" }}>Input Transaksi Manual</h3>
+      <Form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
+        <Row className="mb-3">
+          <Col md={3}>
+            <Form.Control
+              placeholder="ID Transaksi"
+              name="id"
+              value={formData.id}
+              onChange={handleChange}
+            />
+          </Col>
+          <Col md={3}>
+            <Form.Control
+              placeholder="Hunter"
+              name="hunter"
+              value={formData.hunter}
+              onChange={handleChange}
+            />
+          </Col>
+          <Col md={3}>
+            <Form.Control
+              placeholder="Penitip"
+              name="penitip"
+              value={formData.penitip}
+              onChange={handleChange}
+            />
+          </Col>
+          <Col md={3}>
+            <Form.Control
+              placeholder="Pembeli"
+              name="pembeli"
+              value={formData.pembeli}
+              onChange={handleChange}
+            />
+          </Col>
+        </Row>
+        <Row className="mb-3">
+          <Col md={4}>
+            <Form.Control
+              placeholder="Barang"
+              name="barang"
+              value={formData.barang}
+              onChange={handleChange}
+            />
+          </Col>
+          <Col md={4}>
+            <Form.Control
+              placeholder="Harga Jual (Rp)"
+              type="number"
+              name="hargaJual"
+              value={formData.hargaJual}
+              onChange={handleChange}
+            />
+          </Col>
+          <Col md={4}>
+            <Form.Control
+              placeholder="Tanggal Jual (YYYY-MM-DD)"
+              type="date"
+              name="tanggalJual"
+              value={formData.tanggalJual}
+              onChange={handleChange}
+            />
+          </Col>
+        </Row>
+        <Row className="mb-3">
+          <Col md={4}>
+            <Form.Control
+              placeholder="Durasi Titip (hari)"
+              type="number"
+              name="durasiTitipHari"
+              value={formData.durasiTitipHari}
+              onChange={handleChange}
+            />
+          </Col>
+          <Col md={4} className="d-flex align-items-center">
+            <Form.Check
+              type="checkbox"
+              label="Perpanjangan"
+              name="perpanjangan"
+              checked={formData.perpanjangan}
+              onChange={handleChange}
+            />
+          </Col>
+          <Col md={4}>
+            <Button type="submit" style={{ backgroundColor: "#937f6a", border: "none" }}>
+              Tambah Transaksi
+            </Button>
+          </Col>
+        </Row>
+      </Form>
 
-      {/* Main Content */}
-      <div
-        className="flex-grow-1 p-4 bg-light overflow-auto"
-        style={{ minHeight: "100vh" }}
-      >
-        <Container fluid>
-          <h4 style={styles.title}>Daftar Komisi dan Penghasilan</h4>
+      <h3 style={{ color: "#5a374b", marginBottom: "1rem" }}>Daftar Komisi dan Penghasilan</h3>
 
-          <Table bordered hover responsive className="bg-white table-striped">
-            <thead style={styles.headerTable}>
-              <tr>
-                <th>ID Transaksi</th>
-                <th>Hunter</th>
-                <th>Penitip</th>
-                <th>Pembeli</th>
-                <th>Barang</th>
-                <th>Harga Jual (Rp)</th>
-                <th>Komisi Hunter (Rp)</th>
-                <th>Komisi ReuseMart (Rp)</th>
-                <th>Penghasilan Penitip (Rp)</th>
+      <Table bordered hover responsive>
+        <thead style={{ backgroundColor: "#5a374b", color: "white" }}>
+          <tr>
+            <th>ID Transaksi</th>
+            <th>Hunter</th>
+            <th>Penitip</th>
+            <th>Pembeli</th>
+            <th>Barang</th>
+            <th>Harga Jual (Rp)</th>
+            <th>Komisi Hunter (Rp)</th>
+            <th>Komisi ReuseMart (Rp)</th>
+            <th>Penghasilan Penitip (Rp)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {transactions.map((trx) => {
+            const komisiHunter = trx.hargaJual * hunterRate;
+            const komisiReuseMart = hitungKomisiReuseMart(trx);
+            const penghasilanPenitip =
+              trx.hargaJual - komisiHunter - komisiReuseMart;
+            return (
+              <tr key={trx.id}>
+                <td>{trx.id}</td>
+                <td>{trx.hunter}</td>
+                <td>{trx.penitip}</td>
+                <td>{trx.pembeli}</td>
+                <td>{trx.barang}</td>
+                <td>Rp {trx.hargaJual.toLocaleString()}</td>
+                <td className="text-success">
+                  Rp {komisiHunter.toLocaleString()}
+                </td>
+                <td className="text-warning">
+                  Rp {komisiReuseMart.toLocaleString()}
+                </td>
+                <td className="text-primary fw-bold">
+                  Rp {penghasilanPenitip.toLocaleString()}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {MOCK_TRANSACTIONS.map((trx) => {
-                const komisiHunter = trx.hargaJual * hunterRate;
-                const komisiReuseMart = hitungKomisiReuseMart(trx);
-                const penghasilanPenitip =
-                  trx.hargaJual - komisiHunter - komisiReuseMart;
-                return (
-                  <tr key={trx.id}>
-                    <td>{trx.id}</td>
-                    <td>{trx.hunter}</td>
-                    <td>{trx.penitip}</td>
-                    <td>{trx.pembeli}</td>
-                    <td>{trx.barang}</td>
-                    <td>Rp {trx.hargaJual.toLocaleString()}</td>
-                    <td className="text-success">
-                      Rp {komisiHunter.toLocaleString()}
-                    </td>
-                    <td className="text-warning">
-                      Rp {komisiReuseMart.toLocaleString()}
-                    </td>
-                    <td className="text-primary fw-bold">
-                      Rp {penghasilanPenitip.toLocaleString()}
-                    </td>
+            );
+          })}
+        </tbody>
+      </Table>
+
+      <Row>
+        <Col md={6}>
+          <Card className="shadow-sm mb-4">
+            <Card.Header className="bg-success text-white fw-bold">
+              Saldo Penitip
+            </Card.Header>
+            <Card.Body>
+              <Table bordered hover size="sm" className="text-center">
+                <thead>
+                  <tr>
+                    <th>Penitip</th>
+                    <th>Saldo (Rp)</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </Table>
+                </thead>
+                <tbody>
+                  {Object.entries(saldoPenitip).map(([penitip, saldo]) => (
+                    <tr key={penitip}>
+                      <td>{penitip}</td>
+                      <td>Rp {saldo.toLocaleString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </Card.Body>
+          </Card>
+        </Col>
 
-          <Row>
-            <Col md={6}>
-              <Card className="shadow-sm mb-4">
-                <Card.Header className="bg-success text-white fw-bold">
-                  Saldo Penitip
-                </Card.Header>
-                <Card.Body>
-                  <Table bordered hover size="sm" className="text-center">
-                    <thead>
-                      <tr>
-                        <th>Penitip</th>
-                        <th>Saldo (Rp)</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {Object.entries(saldoPenitip).map(([penitip, saldo]) => (
-                        <tr key={penitip}>
-                          <td>{penitip}</td>
-                          <td>Rp {saldo.toLocaleString()}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </Card.Body>
-              </Card>
-            </Col>
-
-            <Col md={6}>
-              <Card className="shadow-sm mb-4">
-                <Card.Header className="bg-info text-white fw-bold">
-                  Poin Pembeli
-                </Card.Header>
-                <Card.Body>
-                  <Table bordered hover size="sm" className="text-center">
-                    <thead>
-                      <tr>
-                        <th>Pembeli</th>
-                        <th>Poin</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {Object.entries(poinPembeli).map(([pembeli, poin]) => (
-                        <tr key={pembeli}>
-                          <td>{pembeli}</td>
-                          <td>{poin}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+        <Col md={6}>
+          <Card className="shadow-sm mb-4">
+            <Card.Header className="bg-info text-white fw-bold">
+              Poin Pembeli
+            </Card.Header>
+            <Card.Body>
+              <Table bordered hover size="sm" className="text-center">
+                <thead>
+                  <tr>
+                    <th>Pembeli</th>
+                    <th>Poin</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(poinPembeli).map(([pembeli, poin]) => (
+                    <tr key={pembeli}>
+                      <td>{pembeli}</td>
+                      <td>{poin}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 };

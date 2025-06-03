@@ -1,23 +1,23 @@
 import useAxios from ".";
 
-// Dapatkan semua transaksi gudang
+
 export const GetAllTransactions = async () => {
   try {
-    const response = await useAxios.get("/gudang/transactions", {
+    const response = await useAxios.get("/penitipan", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
     });
-    return response.data.data; // asumsikan data ada di data.data
+    return response.data.data; 
   } catch (error) {
     throw error.response?.data || error;
   }
 };
 
-// Tambah jadwal pengiriman atau pengambilan
+
 export const CreateTransaction = async (data) => {
-  // data harus mengandung customer, jadwal, dan kurir (optional)
+  
   try {
     const response = await useAxios.post("/gudang/transactions", data, {
       headers: {
@@ -31,7 +31,7 @@ export const CreateTransaction = async (data) => {
   }
 };
 
-// Update status konfirmasi diterima
+
 export const ConfirmReceived = async (id) => {
   try {
     const response = await useAxios.put(`/gudang/transactions/${id}/confirm`, {}, {
@@ -46,7 +46,7 @@ export const ConfirmReceived = async (id) => {
   }
 };
 
-// (Optional) Hapus transaksi (kalau backend support)
+
 export const DeleteTransaction = async (id) => {
   try {
     const response = await useAxios.delete(`/gudang/transactions/${id}`, {

@@ -135,6 +135,10 @@ const ProfilPenitip = () => {
   // Store user ratings per barang { barangId: rating }
   const [userRatings, setUserRatings] = useState({});
 
+  // New states for adding barang titipan manually
+  const [newBarangName, setNewBarangName] = useState('');
+  const [newBarangDurasi, setNewBarangDurasi] = useState('');
+
   // Fetch profile, transactions, and barang dititip on mount
   useEffect(() => {
     const fetchData = async () => {
@@ -213,6 +217,30 @@ const ProfilPenitip = () => {
       [barangId]: star,
     }));
     // TODO: Kirim rating ke backend jika ada
+  };
+
+  // Handle tambah barang titipan baru
+  const handleAddBarang = () => {
+    if (!newBarangName.trim()) {
+      alert('Nama barang tidak boleh kosong');
+      return;
+    }
+    if (!newBarangDurasi || isNaN(newBarangDurasi) || newBarangDurasi <= 0) {
+      alert('Durasi harus berupa angka lebih dari 0');
+      return;
+    }
+
+    const newId = 'BRG' + Date.now();
+
+    const barangBaru = {
+      id: newId,
+      name: newBarangName.trim(),
+      durasi: parseInt(newBarangDurasi)
+    };
+
+    setBarangDititip(prev => [...prev, barangBaru]);
+    setNewBarangName('');
+    setNewBarangDurasi('');
   };
 
   // Loading state
@@ -417,6 +445,38 @@ const ProfilPenitip = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
+
+        {/* Form tambah barang baru */}
+        <div className="p-4 border-b" style={{ borderColor: colors.primary }}>
+          <h4 className="text-md font-semibold mb-2" style={{ color: colors.tertiary }}>
+            Tambah Barang Titipan Baru
+          </h4>
+          <div className="flex space-x-2">
+            <input
+              type="text"
+              placeholder="Nama Barang"
+              value={newBarangName}
+              onChange={(e) => setNewBarangName(e.target.value)}
+              className="flex-1 p-2 border rounded"
+            />
+            <input
+              type="number"
+              placeholder="Durasi (hari)"
+              value={newBarangDurasi}
+              onChange={(e) => setNewBarangDurasi(e.target.value)}
+              className="w-32 p-2 border rounded"
+              min={1}
+            />
+            <button
+              className="px-4 rounded"
+              style={{ backgroundColor: colors.accent, color: 'white' }}
+              onClick={handleAddBarang}
+            >
+              Tambah
+            </button>
+          </div>
+        </div>
+
         <div className="p-4 space-y-2">
           {barangDititip
             .filter(b => b.name.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -541,7 +601,7 @@ const ProfilPenitip = () => {
               </div>
               <button
                 className="w-full py-2 rounded"
-                style={{ backgroundColor: colors.accent, color: "white" }}
+                style={{ backgroundColor: colors.accent, color: 'white' }}
                 disabled={!topUpAmount || parseInt(topUpAmount) <= 0}
                 onClick={handleTopUp}
               >
