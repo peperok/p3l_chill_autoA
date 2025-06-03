@@ -11,6 +11,7 @@ import HomeOrganisasi from "../components/Home/HomeOrganisasi";
 import HomeAdmin from "../components/Home/HomeAdmin";
 import HomeOwner from "../components/Home/HomeOwner";
 import HomeGudang from "../components/Home/HomeGudang";
+import Nota from "../components/Home/Nota";
 import ProfilPenitip from "../components/Profil/ProfilPenitip";
 import Keranjang from "../components/Home/Keranjang";
 import DataPenitip from "../components/Admin/DataPenitip";
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
     path: "/keranjang",
     element: <Keranjang />,
   },
+   {
+    path: "/nota",
+    element: <Nota />,
+  },
   {
     path: "/paymentSuccess",
     element: <PaymentAndRating productId={1} />, 
@@ -77,6 +82,10 @@ const router = createBrowserRouter([
   {
     path: "/admin/komisi",
     element: <Komisi />,
+  },
+  {
+    path: "/home/keranjang",
+    element: <Keranjang />,
   },
 ]);
 

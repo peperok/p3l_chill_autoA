@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   ShoppingCart, 
   Plus, 
@@ -13,7 +13,7 @@ import {
   Truck
 } from 'lucide-react';
 
-// Definisi color palette
+// Color palette
 const colors = {
   primary: '#937f6a',
   secondary: '#5a374b',
@@ -403,8 +403,8 @@ const KeranjangBelanja = () => {
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
-      name: 'Sepatu Sneakers Nike Air Max',
-      price: 1250000,
+      name: 'Sepatu Nike Travis Scoot',
+      price: 400000,
       quantity: 1,
       image: null,
       size: '42',
@@ -413,18 +413,18 @@ const KeranjangBelanja = () => {
     },
     {
       id: 2,
-      name: 'Kaos Polo Ralph Lauren',
-      price: 750000,
+      name: 'kemeja Flanel',
+      price: 297500,
       quantity: 2,
       image: null,
       size: 'L',
       color: 'Navy',
-      brand: 'Ralph Lauren'
+      brand: 'Rollex'
     },
     {
       id: 3,
       name: 'Celana Jeans Levi\'s 501',
-      price: 950000,
+      price: 190000,
       quantity: 1,
       image: null,
       size: '32',
@@ -437,10 +437,21 @@ const KeranjangBelanja = () => {
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromo, setAppliedPromo] = useState(null);
 
-  // State untuk pengiriman
+  // State metode pengiriman
+  const [shippingMethod, setShippingMethod] = useState('kurir'); // 'kurir' atau 'pickup'
+
+  // State ongkos kirim, jika metode 'kurir'
   const [shippingCost, setShippingCost] = useState(25000);
 
-  // Fungsi untuk mengubah kuantitas item
+  // State alamat pengiriman
+  const [addresses, setAddresses] = useState([
+    { id: 1, label: 'Rumah', details: 'Jl. Merpati No. 123, Jakarta Selatan' },
+    { id: 2, label: 'Kantor', details: 'Jl. Sudirman No. 456, Jakarta Pusat' },
+    { id: 3, label: 'Tempat Saudara', details: 'Jl. Melati No. 789, Bandung' },
+  ]);
+  const [selectedAddressId, setSelectedAddressId] = useState(1);
+
+  // Fungsi update kuantitas item
   const updateQuantity = (id, newQuantity) => {
     if (newQuantity < 1) return;
     setCartItems(prevItems =>
@@ -450,20 +461,20 @@ const KeranjangBelanja = () => {
     );
   };
 
-  // Fungsi untuk menghapus item
+  // Fungsi hapus item
   const removeItem = (id) => {
     setCartItems(prevItems => prevItems.filter(item => item.id !== id));
   };
 
-  // Fungsi untuk menerapkan kode promo
+  // Fungsi terapkan kode promo
   const applyPromoCode = () => {
-    if (promoCode === 'DISKON10') {
+    if (promoCode.toUpperCase() === 'DISKON10') {
       setAppliedPromo({
         code: 'DISKON10',
         discount: 0.1,
         description: 'Diskon 10%'
       });
-    } else if (promoCode === 'GRATIS25') {
+    } else if (promoCode.toUpperCase() === 'GRATIS25') {
       setAppliedPromo({
         code: 'GRATIS25',
         discount: 25000,
@@ -474,17 +485,23 @@ const KeranjangBelanja = () => {
     }
   };
 
-  // Kalkulasi total
+  // Kalkulasi subtotal dan diskon
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const promoDiscount = appliedPromo ? 
     (appliedPromo.discount < 1 ? subtotal * appliedPromo.discount : appliedPromo.discount) : 0;
-  const finalShipping = appliedPromo && appliedPromo.code === 'GRATIS25' ? 0 : shippingCost;
+
+  // Ongkos kirim final tergantung metode dan promo
+  const finalShipping = 
+    shippingMethod === 'pickup' ? 0 :
+    (appliedPromo && appliedPromo.code === 'GRATIS25' ? 0 : shippingCost);
+
+  // Total akhir
   const total = subtotal - promoDiscount + finalShipping;
 
   return (
     <div>
       <style>{customStyles}</style>
-      
+
       <div className="container">
         {/* Header Keranjang */}
         <div className="cart-header">
@@ -515,7 +532,7 @@ const KeranjangBelanja = () => {
                 <ShoppingCart size={24} />
                 Item Pesanan
               </h2>
-              
+
               {cartItems.map(item => (
                 <div key={item.id} className="cart-item">
                   <div className="item-image">
@@ -529,7 +546,7 @@ const KeranjangBelanja = () => {
                       <ShoppingCart size={32} color={colors.primary} />
                     )}
                   </div>
-                  
+
                   <div className="item-details">
                     <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: colors.tertiary }}>
                       {item.name}
@@ -545,7 +562,7 @@ const KeranjangBelanja = () => {
                       Rp {item.price.toLocaleString()}
                     </div>
                   </div>
-                  
+
                   <div className="item-actions">
                     <button 
                       className="btn btn-outline-danger"
@@ -554,7 +571,7 @@ const KeranjangBelanja = () => {
                       <Trash2 size={16} />
                       Hapus
                     </button>
-                    
+
                     <div className="quantity-controls">
                       <button 
                         className="quantity-btn"
@@ -590,7 +607,7 @@ const KeranjangBelanja = () => {
                 <Tag size={24} />
                 Kode Promo
               </h3>
-              
+
               {appliedPromo ? (
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -626,58 +643,121 @@ const KeranjangBelanja = () => {
                   </button>
                 </div>
               )}
-              
+
               <div className="text-sm text-muted" style={{ marginTop: '0.75rem' }}>
                 Coba: <strong>DISKON10</strong> (diskon 10%) atau <strong>GRATIS25</strong> (gratis ongkir)
               </div>
             </div>
 
-            {/* Pengiriman */}
+            {/* Pilihan Metode Pengiriman */}
             <div className="shipping-section">
               <h3 className="section-title">
                 <Truck size={24} />
-                Pilihan Pengiriman
+                Pilihan Metode Pengiriman
               </h3>
-              
+
               <div className="form-check">
-                <input 
-                  className="form-check-input" 
-                  type="radio" 
-                  name="shipping" 
-                  id="regular"
-                  checked={shippingCost === 25000}
-                  onChange={() => setShippingCost(25000)}
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="shippingMethod"
+                  id="kurir"
+                  checked={shippingMethod === 'kurir'}
+                  onChange={() => {
+                    setShippingMethod('kurir');
+                    setShippingCost(25000); // reset ke reguler default
+                  }}
                 />
-                <label className="form-check-label" htmlFor="regular">
-                  <div>
-                    <div style={{ fontWeight: '600' }}>Reguler (3-5 hari)</div>
-                    <div className="text-sm text-muted">Pengiriman standar</div>
-                  </div>
-                  <div style={{ fontWeight: '600', color: colors.primary }}>
-                    Rp 25.000
-                  </div>
+                <label className="form-check-label" htmlFor="kurir">
+                  Kurir
                 </label>
               </div>
-              
+
               <div className="form-check">
-                <input 
-                  className="form-check-input" 
-                  type="radio" 
-                  name="shipping" 
-                  id="express"
-                  checked={shippingCost === 50000}
-                  onChange={() => setShippingCost(50000)}
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="shippingMethod"
+                  id="pickup"
+                  checked={shippingMethod === 'pickup'}
+                  onChange={() => setShippingMethod('pickup')}
                 />
-                <label className="form-check-label" htmlFor="express">
-                  <div>
-                    <div style={{ fontWeight: '600' }}>Express (1-2 hari)</div>
-                    <div className="text-sm text-muted">Pengiriman cepat</div>
-                  </div>
-                  <div style={{ fontWeight: '600', color: colors.primary }}>
-                    Rp 50.000
-                  </div>
+                <label className="form-check-label" htmlFor="pickup">
+                  Ambil Sendiri (Pickup) - Gratis
                 </label>
               </div>
+
+              {/* Jika pilih kurir, tampilkan opsi jenis kurir */}
+              {shippingMethod === 'kurir' && (
+                <>
+                  <div className="form-check" style={{ marginLeft: '1.5rem' }}>
+                    <input 
+                      className="form-check-input" 
+                      type="radio" 
+                      name="shippingOption" 
+                      id="regular"
+                      checked={shippingCost === 25000}
+                      onChange={() => setShippingCost(25000)}
+                    />
+                    <label className="form-check-label" htmlFor="regular">
+                      Reguler (3-5 hari)
+                      <span style={{ marginLeft: '0.5rem', fontWeight: '600', color: colors.primary }}>
+                        Rp 25.000
+                      </span>
+                    </label>
+                  </div>
+
+                  <div className="form-check" style={{ marginLeft: '1.5rem' }}>
+                    <input 
+                      className="form-check-input" 
+                      type="radio" 
+                      name="shippingOption" 
+                      id="express"
+                      checked={shippingCost === 50000}
+                      onChange={() => setShippingCost(50000)}
+                    />
+                    <label className="form-check-label" htmlFor="express">
+                      Express (1-2 hari)
+                      <span style={{ marginLeft: '0.5rem', fontWeight: '600', color: colors.primary }}>
+                        Rp 50.000
+                      </span>
+                    </label>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Pilih Alamat Pengiriman */}
+            <div className="shipping-section" style={{ marginTop: '1rem' }}>
+              <h3 className="section-title">
+                <MapPin size={24} />
+                Pilih Alamat Pengiriman
+              </h3>
+
+              {addresses.map((address) => (
+                <div className="form-check" key={address.id}>
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="address"
+                    id={`address-${address.id}`}
+                    checked={selectedAddressId === address.id}
+                    onChange={() => setSelectedAddressId(address.id)}
+                    disabled={shippingMethod === 'pickup'} // Jika pickup, nonaktifkan pilihan alamat
+                  />
+                  <label className="form-check-label" htmlFor={`address-${address.id}`}>
+                    <div style={{ fontWeight: '600' }}>{address.label}</div>
+                    <div className="text-sm text-muted">{address.details}</div>
+                  </label>
+                </div>
+              ))}
+
+              {/* Jika metode pickup, tampilkan info lokasi pickup */}
+              {shippingMethod === 'pickup' && (
+                <div style={{ marginTop: '0.5rem', fontStyle: 'italic', color: colors.primary }}>
+                  * Anda akan mengambil pesanan di toko kami: Jl. Eco Living No. 123, Jakarta Selatan
+                </div>
+              )}
             </div>
 
             {/* Ringkasan Pesanan */}
@@ -686,36 +766,36 @@ const KeranjangBelanja = () => {
                 <CreditCard size={24} />
                 Ringkasan Pesanan
               </h3>
-              
+
               <div className="flex justify-between mb-2">
                 <span>Subtotal ({cartItems.reduce((sum, item) => sum + item.quantity, 0)} item)</span>
                 <span className="price-summary">Rp {subtotal.toLocaleString()}</span>
               </div>
-              
+
               <div className="flex justify-between mb-2">
                 <span>Ongkos Kirim</span>
                 <span className="price-summary">Rp {finalShipping.toLocaleString()}</span>
               </div>
-              
+
               {appliedPromo && (
                 <div className="flex justify-between mb-2 success-text">
                   <span>Diskon ({appliedPromo.description})</span>
                   <span>-Rp {promoDiscount.toLocaleString()}</span>
                 </div>
               )}
-              
+
               <hr className="divider" />
-              
+
               <div className="flex justify-between mb-4">
                 <strong style={{ fontSize: '18px' }}>Total</strong>
                 <strong style={{ fontSize: '20px' }}>Rp {total.toLocaleString()}</strong>
               </div>
-              
+
               <button className="btn btn-primary-custom">
                 <CreditCard size={24} />
                 Lanjut ke Pembayaran
               </button>
-              
+
               <div className="trust-badges">
                 <div className="trust-badge">
                   <Shield size={16} />

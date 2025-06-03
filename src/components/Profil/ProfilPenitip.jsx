@@ -98,9 +98,9 @@ const ProfileService = {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([
-          { id: 'BRG001', name: 'Tas Kulit', durasi: 30 },
-          { id: 'BRG002', name: 'Jaket Denim', durasi: 15 },
-          { id: 'BRG003', name: 'Koper Besar', durasi: 45 }
+          { id: 'BRG001', name: 'Sepatu Nike Travis Scot', durasi: 30 },
+          { id: 'BRG002', name: 'Jam Rollex', durasi: 15 },
+          { id: 'BRG003', name: 'Macbookk', durasi: 45 }
         ]);
       }, 500);
     });

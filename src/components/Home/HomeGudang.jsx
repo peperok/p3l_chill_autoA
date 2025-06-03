@@ -1,92 +1,89 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button, Modal, Form, Table, Alert } from "react-bootstrap";
 import { useReactToPrint } from "react-to-print";
 
-const sampleTransactions = [
-  {
-    id: 1,
-    customer: "Budi Santoso",
-    type: "Pengiriman",
-    kurir: "Joko",
-    jadwal: "2025-06-05 10:00",
-    status: "Menunggu Pengiriman",
-    nota: "Nota-001.pdf"
-  },
-  {
-    id: 2,
-    customer: "Sari Dewi",
-    type: "Pengambilan Sendiri",
-    kurir: null,
-    jadwal: "2025-06-06 14:00",
-    status: "Menunggu Pengambilan",
-    nota: "Nota-002.pdf"
-  },
-];
+import { GetAllTransactions, CreateTransaction, ConfirmReceived } from "../../api/apiGudang";
+
 
 function HomeGudang() {
-  const [transactions, setTransactions] = useState(sampleTransactions);
+  const [transactions, setTransactions] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState("pengiriman"); // pengiriman / pengambilan
-  const [formData, setFormData] = useState({
-    customer: "",
-    kurir: "",
-    jadwal: "",
-  });
+  const [modalType, setModalType] = useState("pengiriman");
+  const [formData, setFormData] = useState({ customer: "", kurir: "", jadwal: "" });
   const [alert, setAlert] = useState(null);
   const printComponentRef = useRef();
 
-  // Handler untuk print nota (simulasi)
   const handlePrint = useReactToPrint({
     content: () => printComponentRef.current,
   });
 
-  // Buka modal tambah jadwal pengiriman atau pengambilan
+  // Fetch transaksi dari backend saat komponen mount
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
+
+  const fetchTransactions = async () => {
+    try {
+      const data = await GetAllTransactions();
+      setTransactions(data);
+    } catch (error) {
+      setAlert(`Gagal load data: ${error.message || error}`);
+    }
+  };
+
   const openModal = (type) => {
     setModalType(type);
     setFormData({ customer: "", kurir: "", jadwal: "" });
+    setAlert(null);
     setShowModal(true);
   };
 
   const handleChange = (e) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // Simulasi simpan jadwal baru
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!formData.customer || !formData.jadwal || (modalType === "pengiriman" && !formData.kurir)) {
       setAlert("Mohon isi semua data dengan lengkap.");
       return;
     }
-    const newTransaction = {
-      id: transactions.length + 1,
+
+    const newData = {
       customer: formData.customer,
-      type: modalType === "pengiriman" ? "Pengiriman" : "Pengambilan Sendiri",
       kurir: modalType === "pengiriman" ? formData.kurir : null,
       jadwal: formData.jadwal,
-      status: modalType === "pengiriman" ? "Menunggu Pengiriman" : "Menunggu Pengambilan",
-      nota: `Nota-00${transactions.length + 1}.pdf`
+      type: modalType === "pengiriman" ? "Pengiriman" : "Pengambilan Sendiri",
     };
-    setTransactions(prev => [...prev, newTransaction]);
-    setShowModal(false);
-    setAlert(null);
+
+    try {
+      await CreateTransaction(newData);
+      setShowModal(false);
+      setAlert(null);
+      fetchTransactions(); // reload data
+    } catch (error) {
+      setAlert(`Gagal simpan: ${error.message || error}`);
+    }
   };
 
-  // Konfirmasi barang diterima
-  const confirmReceived = (id) => {
-    setTransactions(prev => prev.map(tx => {
-      if (tx.id === id) {
-        return { ...tx, status: "Sudah Diterima" };
-      }
-      return tx;
-    }));
-    setAlert("Konfirmasi berhasil.");
+  const confirmReceived = async (id) => {
+    try {
+      await ConfirmReceived(id);
+      setAlert("Konfirmasi berhasil.");
+      fetchTransactions();
+    } catch (error) {
+      setAlert(`Gagal konfirmasi: ${error.message || error}`);
+    }
   };
 
   return (
     <div className="container my-4">
       <h2>Dashboard Gudang</h2>
 
-      {alert && <Alert variant="info" onClose={() => setAlert(null)} dismissible>{alert}</Alert>}
+      {alert && (
+        <Alert variant="info" onClose={() => setAlert(null)} dismissible>
+          {alert}
+        </Alert>
+      )}
 
       <div className="mb-3">
         <Button variant="primary" className="me-2" onClick={() => openModal("pengiriman")}>
@@ -111,7 +108,7 @@ function HomeGudang() {
           </tr>
         </thead>
         <tbody>
-          {transactions.map(tx => (
+          {transactions.map((tx) => (
             <tr key={tx.id}>
               <td>{tx.id}</td>
               <td>{tx.customer}</td>
@@ -120,10 +117,13 @@ function HomeGudang() {
               <td>{tx.jadwal}</td>
               <td>{tx.status}</td>
               <td>
-                <Button variant="outline-success" size="sm" onClick={() => {
-                  alert(`Cetak PDF Nota: ${tx.nota} (simulasi)`);
-                  // Jika mau cetak sebenarnya bisa integrasi react-to-print dll
-                }}>
+                <Button
+                  variant="outline-success"
+                  size="sm"
+                  onClick={() => {
+                    alert(`Cetak PDF Nota: ${tx.nota || "Tidak tersedia"} (simulasi)`);
+                  }}
+                >
                   Cetak Nota
                 </Button>
               </td>
@@ -139,11 +139,12 @@ function HomeGudang() {
         </tbody>
       </Table>
 
-      {/* Modal Tambah Jadwal */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>
-            {modalType === "pengiriman" ? "Tambah Jadwal Pengiriman & Kurir" : "Tambah Jadwal Pengambilan Sendiri"}
+            {modalType === "pengiriman"
+              ? "Tambah Jadwal Pengiriman & Kurir"
+              : "Tambah Jadwal Pengambilan Sendiri"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -185,17 +186,19 @@ function HomeGudang() {
           {alert && <Alert variant="danger">{alert}</Alert>}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>Batal</Button>
-          <Button variant="primary" onClick={handleSave}>Simpan</Button>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Batal
+          </Button>
+          <Button variant="primary" onClick={handleSave}>
+            Simpan
+          </Button>
         </Modal.Footer>
       </Modal>
 
-      {/* Komponen untuk cetak (simulasi) bisa ditambahkan jika ingin menggunakan react-to-print */}
       <div style={{ display: "none" }}>
         <div ref={printComponentRef}>
-          {/* Contoh isi nota, bisa dikembangkan */}
           <h3>Nota Penjualan</h3>
-          {/* Isi nota transaksi */}
+          {/* Bisa dikembangkan isi nota sesuai kebutuhan */}
         </div>
       </div>
     </div>

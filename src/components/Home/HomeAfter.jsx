@@ -72,6 +72,14 @@ function HomeAfter() {
     });
   };
 
+  // Fungsi ini dipanggil saat klik tombol "Beli Sekarang"
+  const handleAddToCart = () => {
+    // Tambahkan logika menambah produk ke keranjang di sini jika diperlukan
+    toast.success("Orderan masuk keranjang");
+    // Jika ingin, juga bisa update cartCount di sini misal:
+    setCartCount((prev) => prev + 1);
+  };
+
   const iklanList = [
     {
       gambar:
@@ -627,6 +635,7 @@ function HomeAfter() {
                           color: "white",
                           border: "none",
                         }}
+                        onClick={handleAddToCart} // <== Ini tombol "Beli Sekarang"
                       >
                         Beli Sekarang
                       </Button>
@@ -845,4 +854,5 @@ function HomeAfter() {
     </>
   );
 }
+
 export default HomeAfter;
