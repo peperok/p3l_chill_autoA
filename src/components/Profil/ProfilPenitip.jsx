@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { User, Wallet, Gift, Clock, ChevronRight, Edit, CreditCard } from "lucide-react";
+import {
+  User,
+  Wallet,
+  Gift,
+  Clock,
+  ChevronRight,
+  Edit,
+  CreditCard,
+} from "lucide-react";
 
 // Color palette
 const colors = {
-  primary: '#937f6a',
-  secondary: '#5a374b',
-  tertiary: '#3a4550',
-  accent: '#b4a95c'
+  primary: "#937f6a",
+  secondary: "#5a374b",
+  tertiary: "#3a4550",
+  accent: "#b4a95c",
 };
 
 // Mock service layer - replace with API calls
@@ -15,13 +23,13 @@ const ProfileService = {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({
-          id: 'PENITIP001',
-          name: 'Budi Santoso',
-          email: 'budi.santoso@example.com',
-          phone: '+62 812-3456-7890',
+          id: "PENITIP001",
+          name: "Wirayudhika",
+          email: "wirayudhika@gmail.com",
+          phone: "+62 812-3456-7890",
           saldo: 750000,
           points: 1250,
-          ratarata_rating: 4.2, // rata-rata rating awal
+          ratarata_rating: 4.2,
         });
       }, 500);
     });
@@ -35,30 +43,30 @@ const ProfileService = {
           page: page,
           transactions: [
             {
-              id: 'TRX001',
-              date: '2024-05-10',
-              title: 'Jaket Kulit Domba',
-              status: 'Berhasil',
+              id: "TRX001",
+              date: "2024-05-10",
+              title: "Jaket Kulit Domba",
+              status: "Berhasil",
               amount: 250000,
-              commission: 25000
+              commission: 25000,
             },
             {
-              id: 'TRX002',
-              date: '2024-05-05',
-              title: 'Sepatu Sneakers',
-              status: 'Berhasil',
+              id: "TRX002",
+              date: "2024-05-05",
+              title: "Sepatu Sneakers",
+              status: "Berhasil",
               amount: 500000,
-              commission: 50000
+              commission: 50000,
             },
             {
-              id: 'TRX003',
-              date: '2024-04-28',
-              title: 'Tas Branded',
-              status: 'Berhasil',
+              id: "TRX003",
+              date: "2024-04-28",
+              title: "Tas Branded",
+              status: "Berhasil",
               amount: 1200000,
-              commission: 120000
-            }
-          ]
+              commission: 120000,
+            },
+          ],
         });
       }, 500);
     });
@@ -70,10 +78,10 @@ const ProfileService = {
         if (amount > 0 && amount <= 750000) {
           resolve({
             success: true,
-            newSaldo: 750000 - amount
+            newSaldo: 750000 - amount,
           });
         } else {
-          reject(new Error('Saldo tidak mencukupi'));
+          reject(new Error("Saldo tidak mencukupi"));
         }
       }, 1000);
     });
@@ -85,10 +93,10 @@ const ProfileService = {
         if (amount > 0) {
           resolve({
             success: true,
-            newSaldo: 750000 + amount
+            newSaldo: 750000 + amount,
           });
         } else {
-          reject(new Error('Jumlah top-up harus lebih dari 0'));
+          reject(new Error("Jumlah top-up harus lebih dari 0"));
         }
       }, 1000);
     });
@@ -98,9 +106,9 @@ const ProfileService = {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([
-          { id: 'BRG001', name: 'Sepatu Nike Travis Scot', durasi: 30 },
-          { id: 'BRG002', name: 'Jam Rollex', durasi: 15 },
-          { id: 'BRG003', name: 'Macbookk', durasi: 45 }
+          { id: "BRG001", name: "Sepatu Nike Travis Scot", durasi: 30 },
+          { id: "BRG002", name: "Jam Rollex", durasi: 15 },
+          { id: "BRG003", name: "Macbookk", durasi: 45 },
         ]);
       }, 500);
     });
@@ -112,7 +120,7 @@ const ProfileService = {
         resolve({ success: true, id, tambahanHari });
       }, 500);
     });
-  }
+  },
 };
 
 const ProfilPenitip = () => {
@@ -120,24 +128,24 @@ const ProfilPenitip = () => {
   const [profile, setProfile] = useState(null);
   const [transactions, setTransactions] = useState([]);
   const [barangDititip, setBarangDititip] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Modals and interactions
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
-  const [withdrawAmount, setWithdrawAmount] = useState('');
+  const [withdrawAmount, setWithdrawAmount] = useState("");
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
-  const [topUpAmount, setTopUpAmount] = useState('');
+  const [topUpAmount, setTopUpAmount] = useState("");
 
   // RATING STATES
   // Store user ratings per barang { barangId: rating }
   const [userRatings, setUserRatings] = useState({});
 
   // New states for adding barang titipan manually
-  const [newBarangName, setNewBarangName] = useState('');
-  const [newBarangDurasi, setNewBarangDurasi] = useState('');
+  const [newBarangName, setNewBarangName] = useState("");
+  const [newBarangDurasi, setNewBarangDurasi] = useState("");
 
   // Fetch profile, transactions, and barang dititip on mount
   useEffect(() => {
@@ -167,13 +175,13 @@ const ProfilPenitip = () => {
       const amount = parseInt(withdrawAmount);
       const result = await ProfileService.withdrawSaldo(amount);
 
-      setProfile(prev => ({
+      setProfile((prev) => ({
         ...prev,
-        saldo: result.newSaldo
+        saldo: result.newSaldo,
       }));
 
       setIsWithdrawOpen(false);
-      setWithdrawAmount('');
+      setWithdrawAmount("");
     } catch (err) {
       alert(err.message);
     }
@@ -185,13 +193,13 @@ const ProfilPenitip = () => {
       const amount = parseInt(topUpAmount);
       const result = await ProfileService.topUpSaldo(amount);
 
-      setProfile(prev => ({
+      setProfile((prev) => ({
         ...prev,
-        saldo: result.newSaldo
+        saldo: result.newSaldo,
       }));
 
       setIsTopUpOpen(false);
-      setTopUpAmount('');
+      setTopUpAmount("");
     } catch (err) {
       alert(err.message);
     }
@@ -199,12 +207,17 @@ const ProfilPenitip = () => {
 
   // Handler perpanjang durasi barang
   const handlePerpanjang = async (id) => {
-    const tambahan = prompt('Masukkan jumlah hari tambahan:');
+    const tambahan = prompt("Masukkan jumlah hari tambahan:");
     if (tambahan && !isNaN(tambahan)) {
-      const result = await ProfileService.perpanjangDurasiBarang(id, parseInt(tambahan));
+      const result = await ProfileService.perpanjangDurasiBarang(
+        id,
+        parseInt(tambahan)
+      );
       if (result.success) {
-        setBarangDititip(prev =>
-          prev.map(b => b.id === id ? { ...b, durasi: b.durasi + parseInt(tambahan) } : b)
+        setBarangDititip((prev) =>
+          prev.map((b) =>
+            b.id === id ? { ...b, durasi: b.durasi + parseInt(tambahan) } : b
+          )
         );
       }
     }
@@ -212,7 +225,7 @@ const ProfilPenitip = () => {
 
   // Handle rating barang oleh user
   const handleRateBarang = (barangId, star) => {
-    setUserRatings(prev => ({
+    setUserRatings((prev) => ({
       ...prev,
       [barangId]: star,
     }));
@@ -222,25 +235,25 @@ const ProfilPenitip = () => {
   // Handle tambah barang titipan baru
   const handleAddBarang = () => {
     if (!newBarangName.trim()) {
-      alert('Nama barang tidak boleh kosong');
+      alert("Nama barang tidak boleh kosong");
       return;
     }
     if (!newBarangDurasi || isNaN(newBarangDurasi) || newBarangDurasi <= 0) {
-      alert('Durasi harus berupa angka lebih dari 0');
+      alert("Durasi harus berupa angka lebih dari 0");
       return;
     }
 
-    const newId = 'BRG' + Date.now();
+    const newId = "BRG" + Date.now();
 
     const barangBaru = {
       id: newId,
       name: newBarangName.trim(),
-      durasi: parseInt(newBarangDurasi)
+      durasi: parseInt(newBarangDurasi),
     };
 
-    setBarangDititip(prev => [...prev, barangBaru]);
-    setNewBarangName('');
-    setNewBarangDurasi('');
+    setBarangDititip((prev) => [...prev, barangBaru]);
+    setNewBarangName("");
+    setNewBarangDurasi("");
   };
 
   // Loading state
@@ -254,7 +267,7 @@ const ProfilPenitip = () => {
           <div
             className="animate-spin w-16 h-16 border-4 rounded-full mx-auto mb-4"
             style={{
-              borderColor: `${colors.secondary} transparent ${colors.secondary} transparent`
+              borderColor: `${colors.secondary} transparent ${colors.secondary} transparent`,
             }}
           />
           <p style={{ color: colors.tertiary }}>Memuat Profil...</p>
@@ -271,14 +284,17 @@ const ProfilPenitip = () => {
         style={{ backgroundColor: colors.primary }}
       >
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold mb-4" style={{ color: colors.secondary }}>
+          <h2
+            className="text-xl font-bold mb-4"
+            style={{ color: colors.secondary }}
+          >
             Kesalahan
           </h2>
           <p className="text-red-600 mb-4">{error}</p>
           <button
             onClick={() => window.location.reload()}
             className="w-full py-2 rounded"
-            style={{ backgroundColor: colors.tertiary, color: 'white' }}
+            style={{ backgroundColor: colors.tertiary, color: "white" }}
           >
             Muat Ulang
           </button>
@@ -290,16 +306,16 @@ const ProfilPenitip = () => {
   // Komponen bintang rating kecil
   const RatingStars = ({ rating, onRate }) => {
     return (
-      <div style={{ display: 'flex', cursor: onRate ? 'pointer' : 'default' }}>
-        {[1, 2, 3, 4, 5].map(star => (
+      <div style={{ display: "flex", cursor: onRate ? "pointer" : "default" }}>
+        {[1, 2, 3, 4, 5].map((star) => (
           <span
             key={star}
             onClick={() => onRate && onRate(star)}
             style={{
               fontSize: 20,
-              color: star <= rating ? '#ffc107' : '#e4e5e9',
+              color: star <= rating ? "#ffc107" : "#e4e5e9",
               marginRight: 4,
-              userSelect: 'none',
+              userSelect: "none",
             }}
           >
             &#9733;
@@ -310,7 +326,10 @@ const ProfilPenitip = () => {
   };
 
   return (
-    <div className="min-h-screen p-4" style={{ backgroundColor: colors.primary }}>
+    <div
+      className="min-h-screen p-4"
+      style={{ backgroundColor: colors.primary }}
+    >
       {/* Profile Header */}
       <div
         className="bg-white shadow-lg rounded-lg overflow-hidden mb-4"
@@ -329,7 +348,10 @@ const ProfilPenitip = () => {
               <p className="text-sm">{profile.email}</p>
             </div>
           </div>
-          <button onClick={() => setIsEditProfileOpen(true)} className="text-white">
+          <button
+            onClick={() => setIsEditProfileOpen(true)}
+            className="text-white"
+          >
             <Edit color="white" size={24} />
           </button>
         </div>
@@ -342,7 +364,9 @@ const ProfilPenitip = () => {
                 <Wallet className="mr-2" style={{ color: colors.secondary }} />
                 <div>
                   <p className="text-sm text-gray-600">Saldo</p>
-                  <p className="font-bold">Rp {profile.saldo.toLocaleString()}</p>
+                  <p className="font-bold">
+                    Rp {profile.saldo.toLocaleString()}
+                  </p>
                 </div>
               </div>
             </div>
@@ -358,15 +382,19 @@ const ProfilPenitip = () => {
           </div>
           {/* Rata-rata rating penitip */}
           <div className="mt-4 flex items-center">
-            <span className="mr-2 font-semibold">Rata-rata Rating Penitip:</span>
+            <span className="mr-2 font-semibold">
+              Rata-rata Rating Penitip:
+            </span>
             <RatingStars rating={profile.ratarata_rating ?? 0} />
-            <span className="ml-2 text-gray-600">({profile.ratarata_rating?.toFixed(1) ?? '0.0'} / 5)</span>
+            <span className="ml-2 text-gray-600">
+              ({profile.ratarata_rating?.toFixed(1) ?? "0.0"} / 5)
+            </span>
           </div>
 
           {/* Withdrawal & Top-Up Buttons */}
           <button
             className="w-full mt-4 py-2 rounded"
-            style={{ backgroundColor: colors.tertiary, color: 'white' }}
+            style={{ backgroundColor: colors.tertiary, color: "white" }}
             onClick={() => setIsWithdrawOpen(true)}
           >
             <div className="flex items-center justify-center">
@@ -376,7 +404,7 @@ const ProfilPenitip = () => {
 
           <button
             className="w-full mt-2 py-2 rounded"
-            style={{ backgroundColor: colors.accent, color: 'white' }}
+            style={{ backgroundColor: colors.accent, color: "white" }}
             onClick={() => setIsTopUpOpen(true)}
           >
             <Wallet className="mr-2" /> Top-Up Saldo
@@ -393,10 +421,16 @@ const ProfilPenitip = () => {
           className="p-4 flex justify-between items-center border-b"
           style={{ borderColor: colors.primary }}
         >
-          <h3 className="text-lg font-bold flex items-center" style={{ color: colors.tertiary }}>
+          <h3
+            className="text-lg font-bold flex items-center"
+            style={{ color: colors.tertiary }}
+          >
             <Clock className="mr-2" /> Riwayat Transaksi
           </h3>
-          <button className="text-sm flex items-center" style={{ color: colors.tertiary }}>
+          <button
+            className="text-sm flex items-center"
+            style={{ color: colors.tertiary }}
+          >
             Lihat Semua <ChevronRight className="ml-2" />
           </button>
         </div>
@@ -406,7 +440,10 @@ const ProfilPenitip = () => {
             <div
               key={transaction.id}
               className="p-3 mb-2 rounded-lg border flex justify-between items-center"
-              style={{ backgroundColor: colors.primary + "20", borderColor: colors.secondary }}
+              style={{
+                backgroundColor: colors.primary + "20",
+                borderColor: colors.secondary,
+              }}
             >
               <div>
                 <p className="font-semibold">{transaction.title}</p>
@@ -430,10 +467,7 @@ const ProfilPenitip = () => {
         className="bg-white rounded-lg shadow-md mt-6"
         style={{ borderColor: colors.secondary }}
       >
-        <div
-          className="p-4 border-b"
-          style={{ borderColor: colors.primary }}
-        >
+        <div className="p-4 border-b" style={{ borderColor: colors.primary }}>
           <h3 className="text-lg font-bold" style={{ color: colors.tertiary }}>
             Daftar Barang Dititip
           </h3>
@@ -448,7 +482,10 @@ const ProfilPenitip = () => {
 
         {/* Form tambah barang baru */}
         <div className="p-4 border-b" style={{ borderColor: colors.primary }}>
-          <h4 className="text-md font-semibold mb-2" style={{ color: colors.tertiary }}>
+          <h4
+            className="text-md font-semibold mb-2"
+            style={{ color: colors.tertiary }}
+          >
             Tambah Barang Titipan Baru
           </h4>
           <div className="flex space-x-2">
@@ -469,7 +506,7 @@ const ProfilPenitip = () => {
             />
             <button
               className="px-4 rounded"
-              style={{ backgroundColor: colors.accent, color: 'white' }}
+              style={{ backgroundColor: colors.accent, color: "white" }}
               onClick={handleAddBarang}
             >
               Tambah
@@ -479,16 +516,23 @@ const ProfilPenitip = () => {
 
         <div className="p-4 space-y-2">
           {barangDititip
-            .filter(b => b.name.toLowerCase().includes(searchTerm.toLowerCase()))
-            .map(barang => (
+            .filter((b) =>
+              b.name.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map((barang) => (
               <div
                 key={barang.id}
                 className="p-3 border rounded flex justify-between items-center"
-                style={{ backgroundColor: colors.primary + "10", borderColor: colors.secondary }}
+                style={{
+                  backgroundColor: colors.primary + "10",
+                  borderColor: colors.secondary,
+                }}
               >
                 <div>
                   <p className="font-bold">{barang.name}</p>
-                  <p className="text-sm text-gray-600">Durasi: {barang.durasi} hari</p>
+                  <p className="text-sm text-gray-600">
+                    Durasi: {barang.durasi} hari
+                  </p>
                 </div>
 
                 {/* Rating untuk tiap barang */}
@@ -509,7 +553,9 @@ const ProfilPenitip = () => {
               </div>
             ))}
           {barangDititip.length === 0 && (
-            <p className="text-center text-gray-500">Tidak ada barang yang dititipkan</p>
+            <p className="text-center text-gray-500">
+              Tidak ada barang yang dititipkan
+            </p>
           )}
         </div>
       </div>
@@ -520,8 +566,14 @@ const ProfilPenitip = () => {
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={() => setIsEditProfileOpen(false)}
         >
-          <div className="bg-white p-6 rounded-lg w-96" onClick={(e) => e.stopPropagation()}>
-            <h2 className="text-xl font-bold mb-4" style={{ color: colors.secondary }}>
+          <div
+            className="bg-white p-6 rounded-lg w-96"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2
+              className="text-xl font-bold mb-4"
+              style={{ color: colors.secondary }}
+            >
               Edit Profil
             </h2>
             <p>Fungsionalitas edit profil akan ditambahkan</p>
@@ -542,8 +594,14 @@ const ProfilPenitip = () => {
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={() => setIsWithdrawOpen(false)}
         >
-          <div className="bg-white p-6 rounded-lg w-96" onClick={(e) => e.stopPropagation()}>
-            <h2 className="text-xl font-bold mb-4" style={{ color: colors.secondary }}>
+          <div
+            className="bg-white p-6 rounded-lg w-96"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2
+              className="text-xl font-bold mb-4"
+              style={{ color: colors.secondary }}
+            >
               Tarik Saldo
             </h2>
             <div className="space-y-4">
@@ -560,12 +618,16 @@ const ProfilPenitip = () => {
               </div>
               <div className="flex justify-between">
                 <span>Saldo Tersedia:</span>
-                <span className="font-bold">Rp {profile.saldo.toLocaleString()}</span>
+                <span className="font-bold">
+                  Rp {profile.saldo.toLocaleString()}
+                </span>
               </div>
               <button
                 className="w-full py-2 rounded"
                 style={{ backgroundColor: colors.tertiary, color: "white" }}
-                disabled={!withdrawAmount || parseInt(withdrawAmount) > profile.saldo}
+                disabled={
+                  !withdrawAmount || parseInt(withdrawAmount) > profile.saldo
+                }
                 onClick={handleWithdraw}
               >
                 <div className="flex items-center justify-center">
@@ -583,8 +645,14 @@ const ProfilPenitip = () => {
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={() => setIsTopUpOpen(false)}
         >
-          <div className="bg-white p-6 rounded-lg w-96" onClick={(e) => e.stopPropagation()}>
-            <h2 className="text-xl font-bold mb-4" style={{ color: colors.secondary }}>
+          <div
+            className="bg-white p-6 rounded-lg w-96"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2
+              className="text-xl font-bold mb-4"
+              style={{ color: colors.secondary }}
+            >
               Top-Up Saldo
             </h2>
             <div className="space-y-4">
@@ -601,7 +669,7 @@ const ProfilPenitip = () => {
               </div>
               <button
                 className="w-full py-2 rounded"
-                style={{ backgroundColor: colors.accent, color: 'white' }}
+                style={{ backgroundColor: colors.accent, color: "white" }}
                 disabled={!topUpAmount || parseInt(topUpAmount) <= 0}
                 onClick={handleTopUp}
               >

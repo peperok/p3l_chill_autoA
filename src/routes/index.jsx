@@ -17,6 +17,8 @@ import Keranjang from "../components/Home/Keranjang";
 import DataPenitip from "../components/Admin/DataPenitip";
 import Komisi from "../components/Admin/Komisi";
 import PaymentAndRating from "../components/Home/PaymentAndRating";
+import DataPegawai from "../components/Admin/DataPegawai";
+import LaporanPage from "../components/Owner/LaporanPage";
 
 const router = createBrowserRouter([
   {
@@ -67,13 +69,13 @@ const router = createBrowserRouter([
     path: "/keranjang",
     element: <Keranjang />,
   },
-   {
+  {
     path: "/nota",
     element: <Nota />,
   },
   {
     path: "/paymentSuccess",
-    element: <PaymentAndRating productId={1} />, 
+    element: <PaymentAndRating productId={1} />,
   },
   {
     path: "/admin/penitip",
@@ -86,6 +88,22 @@ const router = createBrowserRouter([
   {
     path: "/home/keranjang",
     element: <Keranjang />,
+  },
+  {
+    path: "/admin/datapegawai",
+    element: <DataPegawai />,
+  },
+  {
+    path: "/homeOwner/laporan",
+    element: <LaporanPage />,
+  },
+  {
+    path: "homeOwner/laporan/LaporanStokGudang",
+    element: <generateLaporanStokGudang />,
+  },
+  {
+    path: "homeOwner/laporan/LaporanPerKategori",
+    element: <generateLaporanStokGudang />,
   },
 ]);
 
