@@ -17,6 +17,7 @@ import Keranjang from "../components/Home/Keranjang";
 import DataPenitip from "../components/Admin/DataPenitip";
 import Komisi from "../components/Admin/Komisi";
 import PaymentAndRating from "../components/Home/PaymentAndRating";
+import ExpiredTransaction from "../components/Profil/ExpiredTransaction"
 
 const router = createBrowserRouter([
   {
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
   {
     path: "/admin/komisi",
     element: <Komisi />,
+  },
+  {
+    path: "/expiredpenitip",
+    element: <ExpiredTransaction />,
   },
   {
     path: "/home/keranjang",

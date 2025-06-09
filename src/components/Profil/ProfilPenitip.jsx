@@ -11,6 +11,7 @@ const colors = {
 
 // Mock service layer - replace with API calls
 const ProfileService = {
+  
   async getProfile() {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -19,8 +20,8 @@ const ProfileService = {
           name: 'Budi Santoso',
           email: 'budi.santoso@example.com',
           phone: '+62 812-3456-7890',
-          saldo: 750000,
-          points: 1250,
+          saldo: 0,
+          // points: 12500,
           ratarata_rating: 4.2, // rata-rata rating awal
         });
       }, 500);
@@ -63,6 +64,8 @@ const ProfileService = {
       }, 500);
     });
   },
+
+  
 
   async withdrawSaldo(amount) {
     return new Promise((resolve, reject) => {
@@ -251,12 +254,12 @@ const ProfilPenitip = () => {
         style={{ backgroundColor: colors.primary }}
       >
         <div className="text-center">
-          <div
+          {/* <div
             className="animate-spin w-16 h-16 border-4 rounded-full mx-auto mb-4"
             style={{
-              borderColor: `${colors.secondary} transparent ${colors.secondary} transparent`
+              borderColor: ${colors.secondary} transparent ${colors.secondary} transparent
             }}
-          />
+          /> */}
           <p style={{ color: colors.tertiary }}>Memuat Profil...</p>
         </div>
       </div>
@@ -341,7 +344,7 @@ const ProfilPenitip = () => {
               <div className="flex items-center">
                 <Wallet className="mr-2" style={{ color: colors.secondary }} />
                 <div>
-                  <p className="text-sm text-gray-600">Saldo</p>
+                  <p className="text-sm text-gray-600"></p>
                   <p className="font-bold">Rp {profile.saldo.toLocaleString()}</p>
                 </div>
               </div>
@@ -350,21 +353,21 @@ const ProfilPenitip = () => {
               <div className="flex items-center">
                 <Gift className="mr-2" style={{ color: colors.accent }} />
                 <div>
-                  <p className="text-sm text-gray-600">Poin Reward</p>
-                  <p className="font-bold">{profile.points} Poin</p>
+                  <p className="text-sm text-gray-600"></p>
+                  <p className="font-bold">{profile.points} </p>
                 </div>
               </div>
             </div>
           </div>
-          {/* Rata-rata rating penitip */}
+          {/* Rata-rata rating penitip
           <div className="mt-4 flex items-center">
             <span className="mr-2 font-semibold">Rata-rata Rating Penitip:</span>
             <RatingStars rating={profile.ratarata_rating ?? 0} />
             <span className="ml-2 text-gray-600">({profile.ratarata_rating?.toFixed(1) ?? '0.0'} / 5)</span>
-          </div>
+          </div> */}
 
           {/* Withdrawal & Top-Up Buttons */}
-          <button
+          {/* <button
             className="w-full mt-4 py-2 rounded"
             style={{ backgroundColor: colors.tertiary, color: 'white' }}
             onClick={() => setIsWithdrawOpen(true)}
@@ -372,15 +375,15 @@ const ProfilPenitip = () => {
             <div className="flex items-center justify-center">
               <CreditCard className="mr-2" /> Tarik Saldo
             </div>
-          </button>
+          </button> */}
 
-          <button
+          {/* <button
             className="w-full mt-2 py-2 rounded"
             style={{ backgroundColor: colors.accent, color: 'white' }}
             onClick={() => setIsTopUpOpen(true)}
           >
             <Wallet className="mr-2" /> Top-Up Saldo
-          </button>
+          </button> */}
         </div>
       </div>
 
