@@ -1,0 +1,1054 @@
+ReuseMart API API Documentation
+==================================================
+
+Description: Comprehensive second-hand goods marketplace and consignment platform with donation functionality
+Base URL: https://api.reusemart.com/api
+Version: 1.0
+Generated: 2025-06-09T18:33:39.656Z
+
+Merch Endpoints
+------------------------------
+
+GET /merch
+Title: Index Merch
+Description: Get all Merch records
+Auth Required: No
+
+Response (200):
+{
+  "message": "Data retrieved successfully",
+  "data": []
+}
+
+==================================================
+
+POST /merch
+Title: Store Merch
+Description: Create a new Merch
+Auth Required: No
+
+Request Body:
+{
+  "nama_merch": "Sample Name",
+  "stok": 1
+}
+
+Response (201):
+{
+  "message": "Data created successfully",
+  "data": {
+    "id": 1,
+    "nama_merch": "Sample Name",
+    "stok": 1
+  }
+}
+
+Validation Rules:
+{
+  "nama_merch": "required|max:255",
+  "stok": "required|integer|min:0"
+}
+
+==================================================
+
+GET /merch/{id}
+Title: Search Merch
+Description: Find a specific Merch by ID
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+PUT /merch/{id}
+Title: Update Merch
+Description: Update an existing Merch
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+DELETE /merch/{id}
+Title: Destroy Merch
+Description: Delete a Merch
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+Notifikasi Endpoints
+------------------------------
+
+GET /notifikasi/kirimKeUser
+Title: KirimKeUser Notifikasi
+Description: kirimKeUser operation for Notifikasi
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+Organisasi Endpoints
+------------------------------
+
+POST /organisasi/register
+Title: Register Organisasi
+Description: Register new Organisasi user
+Auth Required: No
+
+Request Body:
+{
+  "nama_organisasi": "Sample Name",
+  "alamat_organisasi": "Sample Address",
+  "email": "user@example.com",
+  "password": "sample_value"
+}
+
+Response (201):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+Validation Rules:
+{
+  "nama_organisasi": "required|string|max:255",
+  "alamat_organisasi": "required|string|max:255",
+  "email": "required|string|email|max:255|unique:organisasis",
+  "password": "required|string|min:8"
+}
+
+==================================================
+
+POST /organisasi/login
+Title: Login Organisasi
+Description: Authenticate Organisasi user
+Auth Required: No
+
+Request Body:
+{
+  "email": "user@example.com",
+  "password": "sample_value"
+}
+
+Response (200):
+{
+  "message": "Logged in successfully",
+  "detail": {
+    "id": 1,
+    "email": "user@example.com"
+  },
+  "token": "1|abcd1234..."
+}
+
+Validation Rules:
+{
+  "email": "required|email",
+  "password": "required|string|min:8"
+}
+
+==================================================
+
+GET /organisasi/logout
+Title: Logout Organisasi
+Description: Logout Organisasi user
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+Pegawai Endpoints
+------------------------------
+
+GET /pegawai
+Title: Index Pegawai
+Description: Get all Pegawai records
+Auth Required: No
+
+Response (200):
+{
+  "message": "Data retrieved successfully",
+  "data": []
+}
+
+==================================================
+
+GET /pegawai/{id}
+Title: Search Pegawai
+Description: Find a specific Pegawai by ID
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+POST /pegawai
+Title: Store Pegawai
+Description: Create a new Pegawai
+Auth Required: No
+
+Request Body:
+{
+  "nama_pegawai": "Sample Name",
+  "jabatan": "sample_value",
+  "email": "user@example.com",
+  "password": "sample_value",
+  "tgl_lahir": "2024-01-15"
+}
+
+Response (201):
+{
+  "message": "Data created successfully",
+  "data": {
+    "id": 1,
+    "nama_pegawai": "Sample Name",
+    "jabatan": "sample_value",
+    "email": "user@example.com",
+    "password": "sample_value",
+    "tgl_lahir": "2024-01-15"
+  }
+}
+
+Validation Rules:
+{
+  "nama_pegawai": "required|string|max:255",
+  "jabatan": "required|string|max:255",
+  "email": "required|string|email|max:255|unique:pegawais,email",
+  "password": "required|string|min:8",
+  "tgl_lahir": "required|date"
+}
+
+==================================================
+
+DELETE /pegawai/{id}
+Title: Destroy Pegawai
+Description: Delete a Pegawai
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+PUT /pegawai/{id}
+Title: Update Pegawai
+Description: Update an existing Pegawai
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+POST /pegawai/login
+Title: Login Pegawai
+Description: Authenticate Pegawai user
+Auth Required: No
+
+Request Body:
+{
+  "email": "user@example.com",
+  "password": "sample_value"
+}
+
+Response (200):
+{
+  "message": "Logged in successfully",
+  "detail": {
+    "id": 1,
+    "email": "user@example.com"
+  },
+  "token": "1|abcd1234..."
+}
+
+Validation Rules:
+{
+  "email": "required|string|email",
+  "password": "required|min:8"
+}
+
+==================================================
+
+GET /pegawai/logout
+Title: Logout Pegawai
+Description: Logout Pegawai user
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+Pembelian Endpoints
+------------------------------
+
+GET /pembelian
+Title: Index Pembelian
+Description: Get all Pembelian records
+Auth Required: No
+
+Response (200):
+{
+  "message": "Data retrieved successfully",
+  "data": []
+}
+
+==================================================
+
+POST /pembelian
+Title: Store Pembelian
+Description: Create a new Pembelian
+Auth Required: Yes
+
+Response (201):
+{
+  "message": "Data created successfully",
+  "data": {
+    "id": 1
+  }
+}
+
+==================================================
+
+PUT /pembelian/updatePembeli
+Title: UpdatePembeli Pembelian
+Description: updatePembeli operation for Pembelian
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+PUT /pembelian/updatePegawai
+Title: UpdatePegawai Pembelian
+Description: updatePegawai operation for Pembelian
+Auth Required: Yes
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+GET /pembelian/{id}
+Title: Search Pembelian
+Description: Find a specific Pembelian by ID
+Auth Required: Yes
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+Pembeli Endpoints
+------------------------------
+
+POST /pembeli/register
+Title: Register Pembeli
+Description: Register new Pembeli user
+Auth Required: No
+
+Request Body:
+{
+  "nama_pembeli": "Sample Name",
+  "tlpn_pembeli": "081234567890",
+  "email": "user@example.com",
+  "password": "sample_value"
+}
+
+Response (201):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+Validation Rules:
+{
+  "nama_pembeli": "required|string|max:255",
+  "tlpn_pembeli": "required|string|max:255",
+  "email": "required|string|email|max:255|unique:pembelis",
+  "password": "required|string|min:8"
+}
+
+==================================================
+
+POST /pembeli/login
+Title: Login Pembeli
+Description: Authenticate Pembeli user
+Auth Required: No
+
+Request Body:
+{
+  "email": "user@example.com",
+  "password": "sample_value"
+}
+
+Response (200):
+{
+  "message": "Logged in successfully",
+  "detail": {
+    "id": 1,
+    "email": "user@example.com"
+  },
+  "token": "1|abcd1234..."
+}
+
+Validation Rules:
+{
+  "email": "required|string|email",
+  "password": "required|min:8"
+}
+
+==================================================
+
+GET /pembeli/logout
+Title: Logout Pembeli
+Description: Logout Pembeli user
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+Pengiriman Endpoints
+------------------------------
+
+GET /pengiriman
+Title: Index Pengiriman
+Description: Get all Pengiriman records
+Auth Required: No
+
+Response (200):
+{
+  "message": "Data retrieved successfully",
+  "data": []
+}
+
+==================================================
+
+GET /pengiriman/{id}
+Title: Search Pengiriman
+Description: Find a specific Pengiriman by ID
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+POST /pengiriman
+Title: Store Pengiriman
+Description: Create a new Pengiriman
+Auth Required: No
+
+Request Body:
+{
+  "status_pengiriman": "sample_value",
+  "id_pegawai": "sample_value",
+  "id_alamat": "Sample Address",
+  "id_pembelian": "sample_value"
+}
+
+Response (201):
+{
+  "message": "Data created successfully",
+  "data": {
+    "id": 1,
+    "status_pengiriman": "sample_value",
+    "id_pegawai": "sample_value",
+    "id_alamat": "Sample Address",
+    "id_pembelian": "sample_value"
+  }
+}
+
+Validation Rules:
+{
+  "status_pengiriman": "required",
+  "id_pegawai": "nullable|exists:pegawais,id_pegawai",
+  "id_alamat": "required|exists:alamats,id_alamat",
+  "id_pembelian": "required|exists:pembelians,id_pembelian"
+}
+
+==================================================
+
+PUT /pengiriman/{id}
+Title: Update Pengiriman
+Description: Update an existing Pengiriman
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+DELETE /pengiriman/{id}
+Title: Destroy Pengiriman
+Description: Delete a Pengiriman
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+Penitipan Endpoints
+------------------------------
+
+GET /penitipan
+Title: Index Penitipan
+Description: Get all Penitipan records
+Auth Required: No
+
+Response (200):
+{
+  "message": "Data retrieved successfully",
+  "data": []
+}
+
+==================================================
+
+POST /penitipan
+Title: Store Penitipan
+Description: Create a new Penitipan
+Auth Required: Yes
+
+Response (201):
+{
+  "message": "Data created successfully",
+  "data": {
+    "id": 1
+  }
+}
+
+==================================================
+
+PUT /penitipan/{id}
+Title: Update Penitipan
+Description: Update an existing Penitipan
+Auth Required: Yes
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+GET /penitipan/{id}
+Title: Search Penitipan
+Description: Find a specific Penitipan by ID
+Auth Required: Yes
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+DELETE /penitipan/{id}
+Title: Destroy Penitipan
+Description: Delete a Penitipan
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+Penitip Endpoints
+------------------------------
+
+GET /penitip
+Title: Index Penitip
+Description: Get all Penitip records
+Auth Required: No
+
+Response (200):
+{
+  "message": "Data retrieved successfully",
+  "data": []
+}
+
+==================================================
+
+GET /penitip/{id}
+Title: Search Penitip
+Description: Find a specific Penitip by ID
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+POST /penitip
+Title: Store Penitip
+Description: Create a new Penitip
+Auth Required: No
+
+Request Body:
+{
+  "NIK": "sample_value",
+  "nama_penitip": "Sample Name",
+  "email": "user@example.com",
+  "password": "sample_value"
+}
+
+Response (201):
+{
+  "message": "Data created successfully",
+  "data": {
+    "id": 1,
+    "NIK": "sample_value",
+    "nama_penitip": "Sample Name",
+    "email": "user@example.com",
+    "password": "sample_value"
+  }
+}
+
+Validation Rules:
+{
+  "NIK": "required|string|max:255",
+  "nama_penitip": "required|string|max:255",
+  "email": "required|string|email|max:255|unique:pegawais,email",
+  "password": "required|string|min:8"
+}
+
+==================================================
+
+DELETE /penitip/{id}
+Title: Destroy Penitip
+Description: Delete a Penitip
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+PUT /penitip/{id}
+Title: Update Penitip
+Description: Update an existing Penitip
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+PUT /penitip/updatePegawai
+Title: UpdatePegawai Penitip
+Description: updatePegawai operation for Penitip
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+POST /penitip/login
+Title: Login Penitip
+Description: Authenticate Penitip user
+Auth Required: No
+
+Request Body:
+{
+  "email": "user@example.com",
+  "password": "sample_value"
+}
+
+Response (200):
+{
+  "message": "Logged in successfully",
+  "detail": {
+    "id": 1,
+    "email": "user@example.com"
+  },
+  "token": "1|abcd1234..."
+}
+
+Validation Rules:
+{
+  "email": "required|string|email",
+  "password": "required|min:8"
+}
+
+==================================================
+
+GET /penitip/logout
+Title: Logout Penitip
+Description: Logout Penitip user
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+TukarMerch Endpoints
+------------------------------
+
+GET /tukarmerch/tukar
+Title: Tukar TukarMerch
+Description: tukar operation for TukarMerch
+Auth Required: Yes
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+Validation Rules:
+{
+  "id_merch": "required|exists:merches,id_merch"
+}
+
+==================================================
+
+GET /tukarmerch/daftarKlaim
+Title: DaftarKlaim TukarMerch
+Description: daftarKlaim operation for TukarMerch
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+GET /tukarmerch/konfirmasiAmbil
+Title: KonfirmasiAmbil TukarMerch
+Description: konfirmasiAmbil operation for TukarMerch
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+Alamat Endpoints
+------------------------------
+
+GET /alamat
+Title: Index Alamat
+Description: Get all Alamat records
+Auth Required: Yes
+
+Response (200):
+{
+  "message": "Data retrieved successfully",
+  "data": []
+}
+
+==================================================
+
+POST /alamat
+Title: Store Alamat
+Description: Create a new Alamat
+Auth Required: Yes
+
+Response (201):
+{
+  "message": "Data created successfully",
+  "data": {
+    "id": 1
+  }
+}
+
+==================================================
+
+GET /alamat/{id}
+Title: Search Alamat
+Description: Find a specific Alamat by ID
+Auth Required: Yes
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+PUT /alamat/{id}
+Title: Update Alamat
+Description: Update an existing Alamat
+Auth Required: Yes
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+DELETE /alamat/{id}
+Title: Destroy Alamat
+Description: Delete a Alamat
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+Barang Endpoints
+------------------------------
+
+GET /barang
+Title: Index Barang
+Description: Get all Barang records
+Auth Required: No
+
+Response (200):
+{
+  "message": "Data retrieved successfully",
+  "data": []
+}
+
+==================================================
+
+POST /barang
+Title: Store Barang
+Description: Create a new Barang
+Auth Required: No
+
+Request Body:
+{
+  "nama_barang": "Sample Name",
+  "tgl_garansi": "2024-01-15",
+  "harga_barang": 1,
+  "status_barang": "sample_value",
+  "id_kategori": "sample_value",
+  "desc_barang": "sample_value"
+}
+
+Response (201):
+{
+  "message": "Data created successfully",
+  "data": {
+    "id": 1,
+    "nama_barang": "Sample Name",
+    "tgl_garansi": "2024-01-15",
+    "harga_barang": 1,
+    "status_barang": "sample_value",
+    "id_kategori": "sample_value",
+    "desc_barang": "sample_value"
+  }
+}
+
+Validation Rules:
+{
+  "nama_barang": "required|max:255",
+  "tgl_garansi": "nullable|date",
+  "harga_barang": "required|numeric|min:0",
+  "status_barang": "required",
+  "id_kategori": "required",
+  "desc_barang": "required|max:255"
+}
+
+==================================================
+
+GET /barang/{id}
+Title: Search Barang
+Description: Find a specific Barang by ID
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+PUT /barang/{id}
+Title: Update Barang
+Description: Update an existing Barang
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+DELETE /barang/{id}
+Title: Destroy Barang
+Description: Delete a Barang
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+GET /barang/laporanStokGudang
+Title: LaporanStokGudang Barang
+Description: laporanStokGudang operation for Barang
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+GET /barang/laporanPerKategori
+Title: LaporanPerKategori Barang
+Description: laporanPerKategori operation for Barang
+Auth Required: No
+
+Response (200):
+{
+  "message": "Operation completed successfully",
+  "data": {}
+}
+
+==================================================
+
+Gallery Endpoints
+------------------------------
+
+POST /gallery
+Title: Store Gallery
+Description: Create a new Gallery
+Auth Required: No
+
+Response (201):
+{
+  "message": "Data created successfully",
+  "data": {
+    "id": 1
+  }
+}
+
+==================================================
+
+Kategori Endpoints
+------------------------------
+
+GET /kategori
+Title: Index Kategori
+Description: Get all Kategori records
+Auth Required: No
+
+Response (200):
+{
+  "message": "Data retrieved successfully",
+  "data": []
+}
+
+==================================================
+
+POST /kategori
+Title: Store Kategori
+Description: Create a new Kategori
+Auth Required: No
+
+Response (201):
+{
+  "message": "Data created successfully",
+  "data": {
+    "id": 1
+  }
+}
+
+==================================================
+
