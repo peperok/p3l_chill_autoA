@@ -1,33 +1,66 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Container, Row, Col, Spinner } from "react-bootstrap";
-import { SignIn } from "../../api/apiAuth";
-import { toast } from "react-toastify";
 
-const FormLogin = () => {
+const FormOrganisasi = () => {
+  const navigate = useNavigate();
+  const [isDisabled, setIsDisabled] = useState(true);
   const [data, setData] = useState({
     email: "",
     password: "",
+    nama_organisasi: "",
+    alamat_organisasi: "",
   });
   const [loading, setLoading] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(true);
 
   const handleChange = (event) => {
     const newData = { ...data, [event.target.name]: event.target.value };
     setData(newData);
 
-    setIsDisabled(
-      !(newData.email.trim().length > 0 && newData.password.length > 0)
-    );
+    // Validasi: semua field wajib diisi
+    if (
+      newData.email.trim().length > 0 &&
+      newData.password.length > 0 &&
+      newData.nama_organisasi.trim().length > 0 &&
+      newData.alamat_organisasi.trim().length > 0
+    ) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
   };
 
-  const handleLogin = async (event) => {
+  const Register = async (event) => {
     event.preventDefault();
     setLoading(true);
+
     try {
-      await SignIn(data);
+      const response = await fetch(
+        "http://localhost:8000/api/registerOrganisasi",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const result = await response.json();
+      console.log("Server response:", result); // Untuk debug
+
+      if (response.ok) {
+        alert("Registrasi berhasil!");
+        navigate("/HomeOrganisasi");
+      } else {
+        alert(
+          "Registrasi gagal: " +
+            (result.message || "Periksa kembali data Anda.")
+        );
+      }
     } catch (error) {
-      toast.error("Login gagal: " + (error.message || "Terjadi kesalahan"));
+      console.error("Error saat registrasi:", error);
+      alert("Terjadi kesalahan saat mengirim data.");
     } finally {
       setLoading(false);
     }
@@ -49,10 +82,10 @@ const FormLogin = () => {
               <h3 className="mb-2">
                 <strong>Reuse Mart</strong>
               </h3>
-              <p>Selamat datang. Silakan masuk ke akun Anda.</p>
+              <p>Daftar untuk membuat akun baru.</p>
             </div>
 
-            <Form onSubmit={handleLogin}>
+            <Form onSubmit={Register}>
               <Form.Group className="mb-3" controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
@@ -72,6 +105,31 @@ const FormLogin = () => {
                   name="password"
                   placeholder="Masukkan Password"
                   value={data.password}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="nama_organisasi">
+                <Form.Label>Nama Organisasi</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="nama_organisasi"
+                  placeholder="Masukkan Nama Organisasi"
+                  value={data.nama_organisasi}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="alamat_organisasi">
+                <Form.Label>Alamat</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={2}
+                  name="alamat_organisasi"
+                  placeholder="Masukkan Alamat"
+                  value={data.alamat_organisasi}
                   onChange={handleChange}
                   required
                 />
@@ -97,10 +155,22 @@ const FormLogin = () => {
                     Loading...
                   </>
                 ) : (
-                  "Login"
+                  "Register"
                 )}
               </Button>
             </Form>
+
+            <div className="text-center mt-4 text-muted">
+              <p>
+                Already have an Account?{" "}
+                <Link
+                  to="/login"
+                  style={{ color: "#5a374b", fontWeight: "600" }}
+                >
+                  Click Here!
+                </Link>
+              </p>
+            </div>
           </div>
         </Col>
       </Row>
@@ -108,4 +178,4 @@ const FormLogin = () => {
   );
 };
 
-export default FormLogin;
+export default FormOrganisasi;

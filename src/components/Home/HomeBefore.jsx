@@ -38,163 +38,159 @@ function HomeBefore() {
       setShowAlert(true);
     }, 800);
   };
+const handleAddToWishlist = (productId) => {
+  setWishlist(prev => {
+    const newState = { ...prev };
+    newState[productId] = !prev[productId];
 
-  const handleAddToWishlist = (productId) => {
-    setWishlist(prev => {
-      const newState = {...prev};
-      newState[productId] = !prev[productId];
-      
-      if (newState[productId]) {
-        toast.success("Produk ditambahkan ke wishlist");
-      } else {
-        toast.info("Produk dihapus dari wishlist");
-      }
-      
-      return newState;
-    });
-  };
-
-  const iklanList = [
-    {
-      gambar: "https://i.pinimg.com/736x/14/a6/05/14a605f869de0328deea79d9dfc56dc7.jpg",
-      alt: "Diskon 50%",
-      title: "Diskon Besar 50% untuk Produk Second Branded",
-      description: "Hanya 3 hari! Jangan lewatkan kesempatan ini!"
-    },
-    {
-      gambar: "https://i.pinimg.com/736x/62/e2/9a/62e29a9c2c6ff899bbbbb208dc28776b.jpg",
-      alt: "Gratis Ongkir",
-      title: "Gratis Ongkir ke Seluruh Indonesia",
-      description: "Minimum pembelian Rp150.000"
-    },
-    {
-      gambar: "https://i.pinimg.com/736x/21/f2/cc/21f2ccf8f14bb4d9e30404c97a5a1b07.jpg",
-      alt: "Flash Sale",
-      title: "Flash Sale Setiap Hari",
-      description: "Mulai pukul 12:00 - 15:00 WIB"
-    },
-  ];
-
-  const kategoriList = [
-    { icon: "👕", title: "Fashion" },
-    { icon: "🕶️", title: "Aksesoris" },
-    { icon: "📱", title: "Elektronik" },
-    { icon: "🎒", title: "Tas & Ransel" },
-    { icon: "🔥", title: "Promo Terbaik" },
-    { icon: "📚", title: "Buku" },
-    { icon: "🏠", title: "Peralatan Rumah" },
-    { icon: "🧸", title: "Mainan" },
-    { icon: "⚽", title: "Olahraga" },
-    { icon: "💄", title: "Kosmetik" }
-  ];
-
-  const produkList = [
-    {
-      id: 1,
-      nama: "Nike Travis Scoot",
-      gambar: "https://i.pinimg.com/736x/57/93/b4/5793b4e9291df7ab6c7346d5b563cdc8.jpg",
-      harga: 450000,
-      diskon: 10,
-      rating: 4.5,
-      kondisi: "Seperti Baru"
-    },
-    {
-      id: 2,
-      nama: "Hoodie ",
-      gambar: "https://i.pinimg.com/736x/52/d3/e1/52d3e125a69b221b50515b5cada44d2e.jpg",
-      harga: 175000,
-      diskon: 0,
-      rating: 4.2,
-      kondisi: "Bekas Terawat"
-    },
-    {
-      id: 3,
-      nama: "Jam Rollex",
-      gambar: "https://i.pinimg.com/736x/76/80/f9/7680f946b433ba7c63bcc0f1fd9fc915.jpg",
-      harga: 350000,
-      diskon: 15,
-      rating: 4.8,
-      kondisi: "Seperti Baru"
-    },
-    {
-      id: 4,
-      nama: "Kemeja Flanel",
-      gambar: "https://i.pinimg.com/736x/1c/d0/69/1cd069dd248e50c1110bfc034b8077aa.jpg",
-      harga: 120000,
-      diskon: 0,
-      rating: 4.0,
-      kondisi: "Bekas Terawat"
-    },
-    {
-      id: 5,
-      nama: "Celana Jeans",
-      gambar: "https://i.pinimg.com/736x/2c/61/88/2c6188afc6d324d60819c6de917c0d77.jpg",
-      harga: 200000,
-      diskon: 5,
-      rating: 4.3,
-      kondisi: "Seperti Baru"
-    },
-    {
-      id: 6,
-      nama: "Tas Ransel",
-      gambar: "https://i.pinimg.com/736x/01/90/17/019017ec7ab19159e9b599f767a8425f.jpg",
-      harga: 275000,
-      diskon: 0,
-      rating: 4.6,
-      kondisi: "Bekas Terawat"
-    },
-    {
-      id: 7,
-      nama: "Smartphone",
-      gambar: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
-      harga: 2500000,
-      diskon: 20,
-      rating: 4.7,
-      kondisi: "Bekas Terawat"
-    },
-    {
-      id: 8,
-      nama: "Macbook",
-      gambar: "https://i.pinimg.com/736x/78/bf/a8/78bfa893270a0b531705b1c56f25674d.jpg",
-      harga: 5750000,
-      diskon: 10,
-      rating: 4.9,
-      kondisi: "Bekas Terawat"
+    if (newState[productId]) {
+      toast.success("Produk ditambahkan ke wishlist");
+    } else {
+      toast.info("Produk dihapus dari wishlist");
     }
-  ];
 
+    return newState;
+  });
+};
 
-  const formatRupiah = (angka) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0
-    }).format(angka);
-  };
+const iklanList = [
+  {
+    gambar: "https://i.pinimg.com/736x/14/a6/05/14a605f869de0328deea79d9dfc56dc7.jpg",
+    alt: "Diskon 50%",
+    title: "Diskon Besar 50% untuk Produk Second Branded",
+    description: "Hanya 3 hari! Jangan lewatkan kesempatan ini!"
+  },
+  {
+    gambar: "https://i.pinimg.com/736x/62/e2/9a/62e29a9c2c6ff899bbbbb208dc28776b.jpg",
+    alt: "Gratis Ongkir",
+    title: "Gratis Ongkir ke Seluruh Indonesia",
+    description: "Minimum pembelian Rp150.000"
+  },
+  {
+    gambar: "https://i.pinimg.com/736x/21/f2/cc/21f2ccf8f14bb4d9e30404c97a5a1b07.jpg",
+    alt: "Flash Sale",
+    title: "Flash Sale Setiap Hari",
+    description: "Mulai pukul 12:00 - 15:00 WIB"
+  },
+];
 
-  // Menghitung harga setelah diskon
-  const hitungDiskon = (harga, diskon) => {
-    return harga - (harga * diskon / 100);
-  };
+const kategoriList = [
+  { icon: "👕", title: "Fashion" },
+  { icon: "🕶️", title: "Aksesoris" },
+  { icon: "📱", title: "Elektronik" },
+  { icon: "🎒", title: "Tas & Ransel" },
+  { icon: "🔥", title: "Promo Terbaik" },
+  { icon: "📚", title: "Buku" },
+  { icon: "🏠", title: "Peralatan Rumah" },
+  { icon: "🧸", title: "Mainan" },
+  { icon: "⚽", title: "Olahraga" },
+  { icon: "💄", title: "Kosmetik" }
+];
 
-  // Render bintang rating
-  const renderRating = (rating) => {
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-    
-    return (
-      <div className="product-rating">
-        {[...Array(fullStars)].map((_, i) => (
-          <span key={i} className="star-filled">★</span>
-        ))}
-        {hasHalfStar && <span className="star-half">★</span>}
-        {[...Array(5 - fullStars - (hasHalfStar ? 1 : 0))].map((_, i) => (
-          <span key={i + fullStars + (hasHalfStar ? 1 : 0)} className="star-empty">☆</span>
-        ))}
-        <span className="rating-number">({rating})</span>
-      </div>
-    );
-  };
+const produkList = [
+  {
+    id: 1,
+    nama: "Nike Travis Scoot",
+    gambar: "https://i.pinimg.com/736x/57/93/b4/5793b4e9291df7ab6c7346d5b563cdc8.jpg",
+    harga: 450000,
+    diskon: 10,
+    rating: 4.5,
+    kondisi: "Seperti Baru"
+  },
+  {
+    id: 2,
+    nama: "Hoodie ",
+    gambar: "https://i.pinimg.com/736x/52/d3/e1/52d3e125a69b221b50515b5cada44d2e.jpg",
+    harga: 175000,
+    diskon: 0,
+    rating: 4.2,
+    kondisi: "Bekas Terawat"
+  },
+  {
+    id: 3,
+    nama: "Jam Rollex",
+    gambar: "https://i.pinimg.com/736x/76/80/f9/7680f946b433ba7c63bcc0f1fd9fc915.jpg",
+    harga: 350000,
+    diskon: 15,
+    rating: 4.8,
+    kondisi: "Seperti Baru"
+  },
+  {
+    id: 4,
+    nama: "Kemeja Flanel",
+    gambar: "https://i.pinimg.com/736x/1c/d0/69/1cd069dd248e50c1110bfc034b8077aa.jpg",
+    harga: 120000,
+    diskon: 0,
+    rating: 4.0,
+    kondisi: "Bekas Terawat"
+  },
+  {
+    id: 5,
+    nama: "Celana Jeans",
+    gambar: "https://i.pinimg.com/736x/2c/61/88/2c6188afc6d324d60819c6de917c0d77.jpg",
+    harga: 200000,
+    diskon: 5,
+    rating: 4.3,
+    kondisi: "Seperti Baru"
+  },
+  {
+    id: 6,
+    nama: "Tas Ransel",
+    gambar: "https://i.pinimg.com/736x/01/90/17/019017ec7ab19159e9b599f767a8425f.jpg",
+    harga: 275000,
+    diskon: 0,
+    rating: 4.6,
+    kondisi: "Bekas Terawat"
+  },
+  {
+    id: 7,
+    nama: "Smartphone",
+    gambar: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
+    harga: 2500000,
+    diskon: 20,
+    rating: 4.7,
+    kondisi: "Bekas Terawat"
+  },
+  {
+    id: 8,
+    nama: "Macbook",
+    gambar: "https://i.pinimg.com/736x/78/bf/a8/78bfa893270a0b531705b1c56f25674d.jpg",
+    harga: 5750000,
+    diskon: 10,
+    rating: 4.9,
+    kondisi: "Bekas Terawat"
+  }
+];
+
+const formatRupiah = (angka) => {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0
+  }).format(angka);
+};
+
+const hitungDiskon = (harga, diskon) => {
+  return harga - (harga * diskon / 100);
+};
+
+const renderRating = (rating) => {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 !== 0;
+
+  return (
+    <div className="product-rating">
+      {[...Array(fullStars)].map((_, i) => (
+        <span key={i} className="star-filled">★</span>
+      ))}
+      {hasHalfStar && <span className="star-half">★</span>}
+      {[...Array(5 - fullStars - (hasHalfStar ? 1 : 0))].map((_, i) => (
+        <span key={i + fullStars + (hasHalfStar ? 1 : 0)} className="star-empty">☆</span>
+      ))}
+      <span className="rating-number">({rating})</span>
+    </div>
+  );
+};
 
   return (
     <>
@@ -203,10 +199,10 @@ function HomeBefore() {
           @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
           :root {
-            --primary: #2d6a4f;
-            --primary-light: #40916c;
-            --secondary: #b7b7a4;
-            --accent: #ffca3a;
+            --primary: #937f6a;
+            --primary-light: #5a374b;
+            --secondary: #003a55;
+            --accent: #b4a95c;
             --light: #f8f9fa;
             --dark: #212529;
             --danger: #ff686b;
@@ -282,7 +278,7 @@ function HomeBefore() {
           }
           
           .search-button:hover {
-            background-color: #e6b635;
+            background-color: #a89948;
             transform: translateY(-2px);
           }
 
@@ -340,7 +336,7 @@ function HomeBefore() {
           }
 
           .promo-banner {
-            background: linear-gradient(to right, var(--accent), #ffd56b);
+            background: linear-gradient(to right, var(--accent), #d1c97e);
             text-align: center;
             padding: 0.75rem;
             color: var(--dark);
@@ -828,6 +824,7 @@ function HomeBefore() {
         `}
       </style>
 
+      {/* rest of component JSX unchanged */}
       <header className="header">
         <Link to="/" className="logo">ReuseMart</Link>
         

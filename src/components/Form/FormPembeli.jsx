@@ -1,33 +1,60 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Container, Row, Col, Spinner } from "react-bootstrap";
-import { SignIn } from "../../api/apiAuth";
-import { toast } from "react-toastify";
 
-const FormLogin = () => {
+const FormPembeli = () => {
+  const navigate = useNavigate();
+  const [isDisabled, setIsDisabled] = useState(true);
   const [data, setData] = useState({
+    nama_pembeli: "",
+    tlpn_pembeli: "",
     email: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(true);
 
   const handleChange = (event) => {
     const newData = { ...data, [event.target.name]: event.target.value };
     setData(newData);
 
-    setIsDisabled(
-      !(newData.email.trim().length > 0 && newData.password.length > 0)
-    );
+    const isValid =
+      newData.nama_pembeli.trim() !== "" &&
+      newData.tlpn_pembeli.trim() !== "" &&
+      newData.email.trim() !== "" &&
+      newData.password.trim() !== "";
+
+    setIsDisabled(!isValid);
   };
 
-  const handleLogin = async (event) => {
+  const Register = async (event) => {
     event.preventDefault();
     setLoading(true);
+
     try {
-      await SignIn(data);
-    } catch (error) {
-      toast.error("Login gagal: " + (error.message || "Terjadi kesalahan"));
+      const response = await fetch(
+        "http://localhost:8000/api/registerPembeli",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const result = await response.json();
+      console.log("🔁 Respons dari server:", result);
+
+      if (response.ok) {
+        console.log("✅ Registrasi berhasil");
+        navigate("/HomeAfter");
+      } else {
+        console.warn("❌ Registrasi gagal:", result.message || result);
+        alert("Registrasi gagal: " + (result.message || "Terjadi kesalahan"));
+      }
+    } catch (err) {
+      console.error("❌ Error jaringan / server:", err);
+      alert("Terjadi error saat menghubungi server");
     } finally {
       setLoading(false);
     }
@@ -49,17 +76,41 @@ const FormLogin = () => {
               <h3 className="mb-2">
                 <strong>Reuse Mart</strong>
               </h3>
-              <p>Selamat datang. Silakan masuk ke akun Anda.</p>
+              <p>Daftar untuk membuat akun baru.</p>
             </div>
 
-            <Form onSubmit={handleLogin}>
+            <Form onSubmit={Register}>
+              <Form.Group className="mb-3" controlId="nama_pembeli">
+                <Form.Label>Username</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="nama_pembeli"
+                  placeholder="Masukkan Username"
+                  value={data.nama_pembeli}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="tlpn_pembeli">
+                <Form.Label>Telepon</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="tlpn_pembeli"
+                  placeholder="Masukkan Nomor Telepon"
+                  value={data.tlpn_pembeli}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
               <Form.Group className="mb-3" controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
                   type="email"
                   name="email"
                   placeholder="Masukkan Email"
-                  value={data.email}
+                  value={data.email || ""}
                   onChange={handleChange}
                   required
                 />
@@ -97,10 +148,22 @@ const FormLogin = () => {
                     Loading...
                   </>
                 ) : (
-                  "Login"
+                  "Register"
                 )}
               </Button>
             </Form>
+
+            <div className="text-center mt-4 text-muted">
+              <p>
+                Already have an Account?{" "}
+                <Link
+                  to="/login"
+                  style={{ color: "#5a374b", fontWeight: "600" }}
+                >
+                  Click Here!
+                </Link>
+              </p>
+            </div>
           </div>
         </Col>
       </Row>
@@ -108,4 +171,4 @@ const FormLogin = () => {
   );
 };
 
-export default FormLogin;
+export default FormPembeli;
