@@ -132,7 +132,10 @@ const DataPegawai = () => {
   );
 
   return (
-    <div className="d-flex vh-100" style={{ fontFamily: "Poppins, sans-serif" }}>
+    <div
+      className="d-flex vh-100"
+      style={{ fontFamily: "Poppins, sans-serif" }}
+    >
       {/* Sidebar */}
       <div style={styles.sidebar}>
         <h4 className="text-center mb-4">ReuseMart</h4>
@@ -167,7 +170,7 @@ const DataPegawai = () => {
             </Col>
             <Col className="text-end">
               <Button style={styles.addButton} onClick={handleShow}>
-                + Tambah Pegawai
+                Transaksi
               </Button>
             </Col>
           </Row>
@@ -186,10 +189,9 @@ const DataPegawai = () => {
               <thead>
                 <tr style={styles.headerTable}>
                   <th>#</th>
-                  <th>Nama</th>
-                  <th>Username</th>
-                  <th>Jabatan</th>
-                  <th>Aksi</th>
+                  <th>Nama Barang</th>
+                  <th>Harga Barang</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -231,7 +233,7 @@ const DataPegawai = () => {
           <Modal.Body>
             <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
-                <Form.Label>Nama</Form.Label>
+                <Form.Label>Nama Barang</Form.Label>
                 <Form.Control
                   name="nama"
                   value={formData.nama}
@@ -240,7 +242,7 @@ const DataPegawai = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Username</Form.Label>
+                <Form.Label>Harga Barang</Form.Label>
                 <Form.Control
                   name="username"
                   value={formData.username}
@@ -249,7 +251,7 @@ const DataPegawai = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Jabatan</Form.Label>
+                <Form.Label>Status Barang</Form.Label>
                 <Form.Control
                   name="jabatan"
                   value={formData.jabatan}

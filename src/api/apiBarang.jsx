@@ -76,3 +76,31 @@ export const DeleteBarang = async (id) => {
     throw error.response.data;
   }
 };
+
+export const laporanStokGudang = async () => {
+  try {
+    const response = await useAxios.get("/barang/stokGudang", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const laporanPerKategori = async () => {
+  try {
+    const response = await useAxios.get("/barang/perKategori", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};

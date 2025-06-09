@@ -20,7 +20,7 @@ const SignIn = async (data) => {
         const jabatan = detail?.jabatan?.toLowerCase();
         if (!jabatan) throw new Error("Jabatan pegawai tidak ditemukan.");
 
-        localStorage.setItem("jabatan", jabatan);
+        sessionStorage.setItem("jabatan", jabatan);
 
         switch (jabatan) {
           case "admin":
@@ -42,7 +42,7 @@ const SignIn = async (data) => {
       redirectLogic: (detail) => {
         // Kalau nanti organisasi punya tipe
         const tipe = detail?.tipe?.toLowerCase?.();
-        localStorage.setItem("tipeOrganisasi", tipe || "default");
+        sessionStorage.setItem("tipeOrganisasi", tipe || "default");
         return "/homeOrganisasi"; // bisa dibuat dinamis kalau ada tipe
       },
     },
@@ -59,9 +59,9 @@ const SignIn = async (data) => {
       const token = response.data.token;
       const detail = response.data.detail;
 
-      localStorage.setItem("token", token);
-      localStorage.setItem("role", role.role);
-      localStorage.setItem("user", JSON.stringify(detail));
+      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("role", role.role);
+      sessionStorage.setItem("user", JSON.stringify(detail));
 
 
       const redirectUrl = role.redirectLogic(detail);
